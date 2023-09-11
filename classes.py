@@ -48,8 +48,13 @@ class HomeBudget:
                 week_day = week
 
         for day in week_day:
-            week_single_day = [day, calendar.month_name[self.current_month], self.current_year]
-            week_all_days.append(week_single_day)
+            if day <= self.current_day:
+                week_single_day = [day, calendar.month_name[self.current_month], self.current_year]
+                week_all_days.append(week_single_day)
+
+        #for day in week_day:
+        #    week_single_day = [day, calendar.month_name[self.current_month], self.current_year]
+        #    week_all_days.append(week_single_day)
 
         return week_all_days
     

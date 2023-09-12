@@ -59,18 +59,28 @@ class HomeBudget:
     
 
 class Users:
-    def __init__(self, username, password):
-        self.username = username
-        self.password = password
+    def __init__(self):
+        self.username = ""
+        self.password = ""
 
-    def hash_password(self):
+
+    def __hash_password(self):
         word = hashlib.sha256(self.password.encode('utf-8')).hexdigest()
         hashed = bcrypt.hashpw(word.encode('utf-8'), bcrypt.gensalt())
         return hashed
-    
+
+
     def insert_db(self):
         con = sql.connect('budget.db')
         c =  con.cursor()
-        c.execute("INSERT INTO users (username, password) VALUES (?, ?);", (self.username, self.hash_password()))
+        c.execute("INSERT INTO users (username, password) VALUES (?, ?);", (self.username, self.__hash_password()))
         con.commit()
 
+
+    def display_db(self):
+        con = sql.connect('budget.db')
+        c =  con.cursor()
+        c.execute("SELECT * FROM users;")
+        database= c.fetchall()
+
+        return database

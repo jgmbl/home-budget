@@ -1,5 +1,8 @@
 from datetime import datetime
 import calendar
+import bcrypt
+import hashlib
+import sqlite3 as sql
 
 
 class HomeBudget:
@@ -52,10 +55,22 @@ class HomeBudget:
                 week_single_day = [day, calendar.month_name[self.current_month], self.current_year]
                 week_all_days.append(week_single_day)
 
-        #for day in week_day:
-        #    week_single_day = [day, calendar.month_name[self.current_month], self.current_year]
-        #    week_all_days.append(week_single_day)
-
         return week_all_days
     
+
+class Users:
+    def __init__(self, username, password):
+        self.username = username
+        self.password = password
+
+    def hash_password(self):
+        word = hashlib.sha256(self.password.encode('utf-8')).hexdigest()
+        hashed = bcrypt.hashpw(word.encode('utf-8'), bcrypt.gensalt())
+        return hashed
+    
+    def insert_db(self):
+        con = sql.connect('budget.db')
+        c =  con.cursor()
+        c.execute("INSERT INTO users (username, password) VALUES (?, ?);", (self.username, self.hash_password()))
+        con.commit()
 

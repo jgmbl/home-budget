@@ -3,6 +3,9 @@ from flask_session import Session
 from flask_sqlalchemy import SQLAlchemy
 from classes import HomeBudget
 from flask_login import UserMixin
+from flask_wtf import FlaskForm
+from wtforms import StringField, PasswordField, SubmitField
+from wtforms.validators import InputRequired, Length, ValidationError
 
 
 #configure database
@@ -21,6 +24,29 @@ class User(db.Model, UserMixin):
 
     def __repr__(self):
         return '<User %r>' % self.username
+    
+
+class RegisterForm(FlaskForm):
+    username = StringField(validators=[InputRequired(), Length(min=4, max=20)], render_kw={"placeholder": "Username"})
+
+    password = PasswordField(validators=[InputRequired(), Length(min=8, max=20)], render_kw={"placeholder": "Password"})
+
+    submit = SubmitField('Register')
+
+
+    def validate_username(self, username):
+        existing_username = User.query.filter_by(username=username.data).first()
+        
+        if existing_username:
+            raise ValidationError("That username already exists.")
+
+
+class LoginForm(FlaskForm):
+    username = StringField(validators=[InputRequired(), Length(min=4, max=20)], render_kw={"placeholder": "Username"})
+
+    password = PasswordField(validators=[InputRequired(), Length(min=8, max=20)], render_kw={"placeholder": "Password"})
+
+    submit = SubmitField('Login')
 
 
 @app.route("/", methods=["GET", "POST"])
@@ -32,32 +58,15 @@ def index():
 def login():
     """Log user in"""
 
-    session.clear()
-
-    if request.method == "POST":
-        
-
-        return redirect("/")
-    
-    else:
-        return render_template("login.html")
+    form = LoginForm()
+    return render_template("login.html", form=form)
 
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
     """User registration"""
-    if request.method == "POST":
-        username = request.form.get("username")
-        password = request.form.get("password")
-        confirm_password = request.form.get("confirm_password")
-
-        if password != confirm_password:
-            return render_template("error.html")
-        
-        return redirect("/")
-    
-    else:
-        return render_template("register.html")
+    form = RegisterForm()
+    return render_template("register.html", form=form)
 
 
 if __name__ == "__main__":

@@ -2,7 +2,6 @@ from datetime import datetime
 import calendar
 import bcrypt
 import hashlib
-import sqlite3 as sql
 
 
 class HomeBudget:
@@ -65,22 +64,9 @@ class Users:
 
 
     def __hash_password(self):
+        """"Hash a password"""
+
         word = hashlib.sha256(self.password.encode('utf-8')).hexdigest()
         hashed = bcrypt.hashpw(word.encode('utf-8'), bcrypt.gensalt())
         return hashed
-
-
-    def insert_db(self):
-        con = sql.connect('budget.db')
-        c =  con.cursor()
-        c.execute("INSERT INTO users (username, password) VALUES (?, ?);", (self.username, self.__hash_password()))
-        con.commit()
-
-
-    def display_db(self):
-        con = sql.connect('budget.db')
-        c =  con.cursor()
-        c.execute("SELECT * FROM users;")
-        database= c.fetchall()
-
-        return database
+    

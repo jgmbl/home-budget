@@ -1,14 +1,26 @@
 from flask import Flask, redirect, render_template, request, session
 from flask_session import Session
 from flask_sqlalchemy import SQLAlchemy
-from classes import HomeBudget, Users
+from classes import HomeBudget
+from flask_login import UserMixin
 
 
-# Configure application
-db = SQLAlchemy()
+#configure database
 app = Flask(__name__)
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///budget.db"
-db.init_app(app)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///budget.db'
+db = SQLAlchemy(app)
+
+#configure app
+app.config['SECRET_KEY'] = 'thisisasecretkey'
+
+#table user
+class User(db.Model, UserMixin):
+    id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    username = db.Column(db.String(20), unique=True, nullable=False)
+    password = db.Column(db.String(300), nullable=False)
+
+    def __repr__(self):
+        return '<User %r>' % self.username
 
 
 @app.route("/", methods=["GET", "POST"])
@@ -49,4 +61,4 @@ def register():
 
 
 if __name__ == "__main__":
-    app.run()
+    app.run(debug=True)

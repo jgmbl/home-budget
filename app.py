@@ -26,29 +26,6 @@ class User(db.Model, UserMixin):
         return '<User %r>' % self.username
     
 
-class RegisterForm(FlaskForm):
-    username = StringField(validators=[InputRequired(), Length(min=4, max=20)], render_kw={"placeholder": "Username"})
-
-    password = PasswordField(validators=[InputRequired(), Length(min=8, max=20)], render_kw={"placeholder": "Password"})
-
-    submit = SubmitField('Register')
-
-
-    def validate_username(self, username):
-        existing_username = User.query.filter_by(username=username.data).first()
-        
-        if existing_username:
-            raise ValidationError("That username already exists.")
-
-
-class LoginForm(FlaskForm):
-    username = StringField(validators=[InputRequired(), Length(min=4, max=20)], render_kw={"placeholder": "Username"})
-
-    password = PasswordField(validators=[InputRequired(), Length(min=8, max=20)], render_kw={"placeholder": "Password"})
-
-    submit = SubmitField('Login')
-
-
 @app.route("/", methods=["GET", "POST"])
 def index():
     return render_template("homepage.html")
@@ -57,16 +34,28 @@ def index():
 @app.route("/login", methods=["GET", "POST"])
 def login():
     """Log user in"""
+    if request.method == "POST":
+        username = request.form.get("username")
+        password = request.form.get("password")
 
-    form = LoginForm()
-    return render_template("login.html", form=form)
+        return redirect("/")
+    
+    else:
+        return render_template("login.html")
 
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
     """User registration"""
-    form = RegisterForm()
-    return render_template("register.html", form=form)
+    if request.method == "POST":
+        username = request.form.get("username")
+        password = request.form.get("password")
+        confirm_password = request.form.get("confirm_password")
+
+        return redirect("/")
+    
+    else:
+        return render_template("register.html")
 
 
 if __name__ == "__main__":

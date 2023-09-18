@@ -5,8 +5,9 @@ from sqlalchemy import select
 from flask_login import LoginManager, UserMixin, login_user, LoginManager, logout_user, current_user, login_required
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField
-from wtforms.validators import InputRequired, Length, ValidationError
+from wtforms.validators import InputRequired, Length, ValidationError, EqualTo
 from flask_bcrypt import Bcrypt
+import getpass
 
 #configure database
 app = Flask(__name__)
@@ -42,14 +43,15 @@ class User(db.Model, UserMixin):
 
 class RegisterForm(FlaskForm):
     username = StringField(validators=[InputRequired(), Length(min=6, max=25)], render_kw={"placeholder": "Username"})
-    password = StringField(validators=[InputRequired(), Length(min=6, max=25)], render_kw={"placeholder": "Username"})
+    password = StringField(validators=[InputRequired(), Length(min=6, max=25)], render_kw={"placeholder": "Password"})
+    confirm_password = StringField(validators=[InputRequired(), Length(min=6, max=25), EqualTo('password')], render_kw={"placeholder": "Confirm password"})
     submit = SubmitField("Register")
 
     def validate_username(self, username):
         existing_user_username = User.query.filter_by(username=username.data).first()
         if existing_user_username:
             raise ValidationError("Username is taken")
-        
+
 
 
 class LoginForm(FlaskForm):
@@ -60,6 +62,7 @@ class LoginForm(FlaskForm):
 @app.route("/", methods=["GET", "POST"])
 @login_required
 def index():
+    print(current_user)
     return render_template("homepage.html")
 
 

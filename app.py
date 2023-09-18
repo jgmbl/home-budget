@@ -1,11 +1,8 @@
 from flask import Flask, redirect, render_template, request, session
 from flask_session import Session
 from flask_sqlalchemy import SQLAlchemy
-from classes import HomeBudget
-from flask_login import UserMixin
-from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField
-from wtforms.validators import InputRequired, Length, ValidationError
+from sqlalchemy import select
+from flask_login import LoginManager, UserMixin
 
 
 #configure database
@@ -14,7 +11,17 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///budget.db'
 db = SQLAlchemy(app)
 
 #configure app
-app.config['SECRET_KEY'] = 'thisisasecretkey'
+app.config['SECRET_KEY'] = 'e338ad3e3496373c1be998218674fa2876bd05fb95879f17d4e10b4b79124416'
+
+#configure login manager
+login_manager = LoginManager()
+login_manager.init_app(app)
+
+
+@login_manager.user_loader
+def load_user(user):
+    return User.query.get(int(user))
+
 
 #table user
 class User(db.Model, UserMixin):
@@ -34,9 +41,14 @@ def index():
 @app.route("/login", methods=["GET", "POST"])
 def login():
     """Log user in"""
+    session.clear()
+
     if request.method == "POST":
         username = request.form.get("username")
         password = request.form.get("password")
+
+        stmt = User()
+        session['user_id'] = rows[0][0]
 
         return redirect("/")
     
@@ -44,9 +56,8 @@ def login():
         return render_template("login.html")
 
 
-@app.route("/register", methods=["GET", "POST"])
+"""@app.route("/register", methods=["GET", "POST"])
 def register():
-    """User registration"""
     if request.method == "POST":
         username = request.form.get("username")
         password = request.form.get("password")
@@ -55,7 +66,7 @@ def register():
         return redirect("/")
     
     else:
-        return render_template("register.html")
+        return render_template("register.html")"""
 
 
 if __name__ == "__main__":

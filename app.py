@@ -1,7 +1,8 @@
 from flask import Flask, redirect, render_template, request, session, url_for
 from flask_session import Session
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import select
+from sqlalchemy import select, ForeignKey
+from sqlalchemy.orm import relationship, backref
 from flask_login import LoginManager, UserMixin, login_user, LoginManager, logout_user, current_user, login_required
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField
@@ -31,7 +32,8 @@ def load_user(user_id):
     return User.query.get(int(user_id))
 
 
-#table user
+
+#database tables
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     username = db.Column(db.String(20), unique=True, nullable=False)
@@ -39,7 +41,36 @@ class User(db.Model, UserMixin):
 
     def __repr__(self):
         return '<User %r>' % self.username
-    
+
+
+class Spendings(db.Model):
+    id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    user_database = db.relationship("User", backref=backref("user_spendings", uselist=False))
+    category = db.Column(db.String(20), nullable=False)
+    value = db.Column(db.Integer, nullable=False)
+    date = db.Column(db.DateTime, nullable=False)
+
+
+class Budgeting(db.Model):
+    id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    user_database = db.relationship("User", backref=backref("user_budgeting", uselist=False))
+    category = db.Column(db.String(20), nullable=False)
+    value = db.Column(db.Integer, nullable=False)
+    value_percent = db.Column(db.Integer, nullable=False)
+    date = db.Column(db.DateTime, nullable=False)
+
+
+class Savings(db.Model):
+    id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    user_database = db.relationship("User", backref=backref("user_savings", uselist=False))
+    value = db.Column(db.Integer, nullable=False)
+    value_summary = db.Column(db.Integer, nullable=False)
+    date = db.Column(db.DateTime, nullable=False)
+
+
 
 class RegisterForm(FlaskForm):
     username = StringField(validators=[InputRequired(), Length(min=6, max=25)], render_kw={"placeholder": "Username"})
@@ -58,6 +89,7 @@ class LoginForm(FlaskForm):
     username = StringField(validators=[InputRequired(), Length(min=6, max=25)], render_kw={"placeholder": "Username"})
     password = StringField(validators=[InputRequired(), Length(min=6, max=25)], render_kw={"placeholder": "Password"})
     submit = SubmitField("Login")
+
 
 @app.route("/", methods=["GET", "POST"])
 @login_required
@@ -105,6 +137,25 @@ def register():
     else:
         return render_template("register.html", form=form)
     
+
+@app.route("/spendings", methods=["GET", "POST"])
+def spendings():
+    if request.method == "POST":
+        return redirect("/spendings")
+    
+    else:
+        return render_template("spendings.html")
+
+
+@app.route("/savings", methods=["GET", "POST"])
+def savings():
+    if request.method == "POST":
+        return redirect("/savings")
+    
+    else:
+        return render_template("savings.html")
+
+
 
 if __name__ == "__main__":
     app.run(debug=True)

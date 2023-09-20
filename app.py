@@ -91,11 +91,11 @@ class LoginForm(FlaskForm):
     submit = SubmitField("Login")
 
 
-@app.route("/", methods=["GET", "POST"])
+@app.route("/", methods=["GET"])
 @login_required
 def index():
     print(current_user)
-    return render_template("homepage.html")
+    return render_template("summary.html")
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -141,14 +141,32 @@ def register():
 @app.route("/spendings", methods=["GET", "POST"])
 def spendings():
     if request.method == "POST":
-        return redirect("/spendings")
+        return redirect("/showspendings")
     
     else:
         return render_template("spendings.html")
+    
+
+@app.route("/showspendings", methods=["GET", "POST"])
+def show_spendings():
+    if request.method == "POST":
+        return redirect("/showspendings")
+    
+    else:
+        return render_template("showspendings.html")
+
+
+@app.route("/budgeting", methods=["GET", "POST"])
+def savings():
+    if request.method == "POST":
+        return redirect("/budgeting")
+    
+    else:
+        return render_template("budgeting.html")
 
 
 @app.route("/savings", methods=["GET", "POST"])
-def savings():
+def budgeting():
     if request.method == "POST":
         return redirect("/savings")
     

@@ -9,6 +9,7 @@ from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import InputRequired, Length, ValidationError, EqualTo
 from flask_bcrypt import Bcrypt
 import getpass
+from datetime import datetime, date
 
 #configure database
 app = Flask(__name__)
@@ -93,9 +94,22 @@ class LoginForm(FlaskForm):
 
 @app.route("/", methods=["GET"])
 @login_required
-def index():
-    print(current_user)
+def summary():
     return render_template("summary.html")
+
+
+@app.route("/budgeting", methods=["GET", "POST"])
+@login_required
+def budgeting():
+    date_today = date.today()
+    week_day = date_today.strftime('%A')
+
+
+    if request.method == "POST":
+        return redirect("/budgeting")
+    
+    else:
+        return render_template("budgeting.html", week_day=week_day, date_today=date_today)
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -137,43 +151,6 @@ def register():
     else:
         return render_template("register.html", form=form)
     
-
-@app.route("/spendings", methods=["GET", "POST"])
-def spendings():
-    if request.method == "POST":
-        return redirect("/showspendings")
-    
-    else:
-        return render_template("spendings.html")
-    
-
-@app.route("/showspendings", methods=["GET", "POST"])
-def show_spendings():
-    if request.method == "POST":
-        return redirect("/showspendings")
-    
-    else:
-        return render_template("showspendings.html")
-
-
-@app.route("/budgeting", methods=["GET", "POST"])
-def savings():
-    if request.method == "POST":
-        return redirect("/budgeting")
-    
-    else:
-        return render_template("budgeting.html")
-
-
-@app.route("/savings", methods=["GET", "POST"])
-def budgeting():
-    if request.method == "POST":
-        return redirect("/savings")
-    
-    else:
-        return render_template("savings.html")
-
-
 
 if __name__ == "__main__":
     app.run(debug=True)

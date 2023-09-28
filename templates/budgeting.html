@@ -3,7 +3,42 @@
 
 {% block body %}
 <form action="/budgeting" method="post">
-    <h1>budgeting</h1>
+    <h1>Budgeting</h1>
 </form> 
+<p>Today is {{ week_day }}, {{ date_today }}. </p>
+<br>
+<h3>Monthly budgeting</h3>
+<form>
+    <label for="daily_spendings">Daily spendings [%]</label>
+    <input type="number" id="daily_spendings" name="daily_spendings"><br><br>
+    <label for="large_spendings">Large spendings [%]</label>
+    <input type="number" id="large_spendings" name="large_spendings"><br><br>
+    <label for="investments">Investments [%]</label>
+    <input type="number" id="investments" name="investments"><br><br>
+    <label for="education">Education [%]</label>
+    <input type="number" id="education" name="education"><br><br>
+    <label for="others">Others [%]</label>
+    <input type="number" id="others" name="others"><br><br>
+    <input type="submit" value="Submit">
+    <br>
+</form>
+<h3>Show budgeting</h3>
+<table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Category</th>
+        <th scope="col">Value %</th>
+        <th scope="col">Value</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Mark</td>
+        <td>Otto</td>
+        <td>@mdo</td>
+      </tr>
+    </tbody>
+  </table>
+  <br>
 
 {% endblock %}

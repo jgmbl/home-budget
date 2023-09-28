@@ -106,6 +106,14 @@ def budgeting():
 
 
     if request.method == "POST":
+        #get requests from form
+        daily_spendings = request.form.get("daily_spendings")
+        large_spendings = request.form.get("large_spendings")
+        investments = request.form.get("investments")
+        education = request.form.get("education")
+        others = request.form.get("others")
+
+        
         return redirect("/budgeting")
     
     else:

@@ -4,24 +4,24 @@
 {% block body %}
 <form action="/budgeting" method="post">
     <h1>Budgeting</h1>
-</form> 
-<p>Today is {{ week_day }}, {{ date_today }}. </p>
-<br>
-<h3>Monthly budgeting</h3>
-<form>
-    <label for="daily_spendings">Daily spendings [%]</label>
-    <input type="number" id="daily_spendings" name="daily_spendings"><br><br>
-    <label for="large_spendings">Large spendings [%]</label>
-    <input type="number" id="large_spendings" name="large_spendings"><br><br>
-    <label for="investments">Investments [%]</label>
-    <input type="number" id="investments" name="investments"><br><br>
-    <label for="education">Education [%]</label>
-    <input type="number" id="education" name="education"><br><br>
-    <label for="others">Others [%]</label>
-    <input type="number" id="others" name="others"><br><br>
-    <input type="submit" value="Submit">
+    <p>Today is {{ week_day }}, {{ date_today }}. </p>
     <br>
-</form>
+    <h3>Monthly budgeting</h3>
+    <div class="mb-3">
+        <label for="daily_spendings">Daily spendings [%]</label>
+        <input type="number" min="0" max="100" id="daily_spendings" name="daily_spendings"><br><br>
+        <label for="large_spendings">Large spendings [%]</label>
+        <input type="number" min="0" max="100" id="large_spendings" name="large_spendings"><br><br>
+        <label for="investments">Investments [%]</label>
+        <input type="number" min="0" max="100" id="investments" name="investments"><br><br>
+        <label for="education">Education [%]</label>
+        <input type="number" min="0" max="100" id="education" name="education"><br><br>
+        <label for="others">Others [%]</label>
+        <input type="number" min="0" max="100" id="others" name="others"><br><br>
+        <button class="btn btn-primary" type="submit">Add budgeting</button>
+        <br>
+    </div>
+</form> 
 <h3>Show budgeting</h3>
 <table class="table">
     <thead>

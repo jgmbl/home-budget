@@ -8,16 +8,18 @@
     <br>
     <h3>Monthly budgeting</h3>
     <div class="mb-3">
+        <label for="income">Income [$]</label>
+        <input type="number" min="0" id="income" name="income"><br><br>
         <label for="daily_spendings">Daily spendings [%]</label>
-        <input type="number" min="0" max="100" id="daily_spendings" name="daily_spendings"><br><br>
+        <input type="number" min="0" step="10" max="100" id="daily_spendings" name="daily_spendings"><br><br>
         <label for="large_spendings">Large spendings [%]</label>
-        <input type="number" min="0" max="100" id="large_spendings" name="large_spendings"><br><br>
+        <input type="number" min="0" step="10" max="100" id="large_spendings" name="large_spendings"><br><br>
         <label for="investments">Investments [%]</label>
-        <input type="number" min="0" max="100" id="investments" name="investments"><br><br>
+        <input type="number" min="0" step="10" max="100" id="investments" name="investments"><br><br>
         <label for="education">Education [%]</label>
-        <input type="number" min="0" max="100" id="education" name="education"><br><br>
+        <input type="number" min="0" step="10" max="100" id="education" name="education"><br><br>
         <label for="others">Others [%]</label>
-        <input type="number" min="0" max="100" id="others" name="others"><br><br>
+        <input type="number" min="0" step="10" max="100" id="others" name="others"><br><br>
         {% with messages = get_flashed_messages() %}
             {% if messages %}
               <ul class=flashes>

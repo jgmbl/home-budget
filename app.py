@@ -58,6 +58,7 @@ class Budgeting(db.Model):
     id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     user_database = db.relationship("User", backref=backref("user_budgeting", uselist=False))
+    sum_budget = db.Column(db.Integer, nullable=False)
     category = db.Column(db.String(20), nullable=False)
     value = db.Column(db.Integer, nullable=False)
     value_percent = db.Column(db.Integer, nullable=False)
@@ -108,6 +109,7 @@ def budgeting():
 
     if request.method == "POST":
         #get requests from form
+        income = int(request.form.get("income"))
         daily_spendings = int(request.form.get("daily_spendings"))
         large_spendings = int(request.form.get("large_spendings"))
         investments = int(request.form.get("investments"))

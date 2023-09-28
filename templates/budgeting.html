@@ -18,6 +18,15 @@
         <input type="number" min="0" max="100" id="education" name="education"><br><br>
         <label for="others">Others [%]</label>
         <input type="number" min="0" max="100" id="others" name="others"><br><br>
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+              <ul class=flashes>
+              {% for message in messages %}
+                <b>{{ message }}</b>
+              {% endfor %}
+              </ul>
+            {% endif %}
+          {% endwith %}
         <button class="btn btn-primary" type="submit">Add budgeting</button>
         <br>
     </div>

@@ -1,4 +1,4 @@
-from flask import Flask, redirect, render_template, request, session, url_for
+from flask import Flask, redirect, render_template, request, session, url_for, flash
 from flask_session import Session
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import select, ForeignKey
@@ -10,6 +10,7 @@ from wtforms.validators import InputRequired, Length, ValidationError, EqualTo
 from flask_bcrypt import Bcrypt
 import getpass
 from datetime import datetime, date
+from userbudgeting import UserBudgeting
 
 #configure database
 app = Flask(__name__)
@@ -107,11 +108,15 @@ def budgeting():
 
     if request.method == "POST":
         #get requests from form
-        daily_spendings = request.form.get("daily_spendings")
-        large_spendings = request.form.get("large_spendings")
-        investments = request.form.get("investments")
-        education = request.form.get("education")
-        others = request.form.get("others")
+        daily_spendings = int(request.form.get("daily_spendings"))
+        large_spendings = int(request.form.get("large_spendings"))
+        investments = int(request.form.get("investments"))
+        education = int(request.form.get("education"))
+        others = int(request.form.get("others"))
+
+        #check if sum of forms is equal 100
+        if UserBudgeting.check_sum_of_percent(daily_spendings, large_spendings, investments, education, others) == False:
+            flash("Sum of fields should be equal 100", "error")
 
         
         return redirect("/budgeting")

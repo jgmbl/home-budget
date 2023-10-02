@@ -47,21 +47,22 @@ class UserBudgeting:
         
         return True
     
-    
+
     """Show category, value and value_percent from table budgeting to table on website"""
-    def show_budgeting(self):
-        #user_id = session["_user_id"]
-        user_id = 1
+    @staticmethod
+    def display_budgeting():
+        user_id = session["_user_id"]
 
         con = sqlite3.connect("instance/budget.db")
         cur = con.cursor()
         
 
-        budgeting = cur.execute("SELECT category, value, value_percent FROM budgeting WHERE user_id = ?", (user_id,))
+        budgeting = cur.execute("SELECT category, value, value_percent, date FROM budgeting WHERE user_id = ?", (user_id,))
         budgeting_table = budgeting.fetchall()
         con.close()
 
         return budgeting_table
+    
 
 
 

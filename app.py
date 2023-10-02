@@ -108,6 +108,8 @@ def budgeting():
     date_today = date.today()
     week_day = date_today.strftime('%A')
 
+    #show data in table
+    budgeting_table = UserBudgeting.display_budgeting()
 
     if request.method == "POST":
         #get requests from form
@@ -120,11 +122,9 @@ def budgeting():
 
         logged_user = UserBudgeting(income)
 
-
         #check errors
         if UserBudgeting.check_sum_of_percent(daily_spendings, large_spendings, investments, education, others) == False:
             abort(400, "Sum of percent must be equal 100")
-
 
         #add values to table budgeting
         logged_user.add_budgeting_to_table("daily spendings", daily_spendings)
@@ -133,11 +133,12 @@ def budgeting():
         logged_user.add_budgeting_to_table("education", education)
         logged_user.add_budgeting_to_table("others", others)
 
-        
+
         return redirect("/budgeting")
     
     else:
-        return render_template("budgeting.html", week_day=week_day, date_today=date_today)
+        print(budgeting_table)
+        return render_template("budgeting.html", week_day=week_day, date_today=date_today, table=budgeting_table)
 
 
 @app.route("/login", methods=["GET", "POST"])

@@ -7,8 +7,39 @@
     <p>Today is {{ week_day }}, {{ date_today }}.</p>
     <br>
     <h3>Add spendings</h3>
-    <br>
+    <div class="mb-3">
+        <label for="value">Value [$]</label>
+        <input type="number" min="0" id="value" name="value" required><br><br>
+        <label for="category">Category</label>
+        <select name="category" id="category">
+            <option value="daily_spendings">Daily_spendings</option>
+            <option value="Large_spendings">Large spensings</option>
+            <option value="investments">Investments</option>
+            <option value="education">Education</option>
+            <option value="others">Others</option>
+          </select> <br><br>
+        <label for="note">Note</label>
+        <input type="text" id="note" name="note"><br><br>
+        <button class="btn btn-primary" type="submit">Add</button>
+        <br>
+    </div>
     <h3>See spendings</h3>
+        <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Category</th>
+                <th scope="col">Value</th>
+                <th scope="col">Date</th>
+              </tr>
+            </thead>
+            <tbody>
+                <tr>
+                  <td>temp</td>
+                  <td>temp</td>
+                  <td>temp</td>
+                </tr>
+            </tbody>
+        </table>
     <br>
 </form> 
 

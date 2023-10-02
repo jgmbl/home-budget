@@ -125,11 +125,11 @@ def budgeting():
             flash("Sum of fields should be equal 100", "error")
 
         #add values to table budgeting
-        logged_user.add_budgeting_to_table(user_id, "daily spendings", daily_spendings)
-        logged_user.add_budgeting_to_table(user_id, "large spendings", large_spendings)
-        logged_user.add_budgeting_to_table(user_id, "investments", investments)
-        logged_user.add_budgeting_to_table(user_id, "education", education)
-        logged_user.add_budgeting_to_table(user_id, "others", others)
+        logged_user.add_budgeting_to_table("daily spendings", daily_spendings)
+        logged_user.add_budgeting_to_table("large spendings", large_spendings)
+        logged_user.add_budgeting_to_table("investments", investments)
+        logged_user.add_budgeting_to_table("education", education)
+        logged_user.add_budgeting_to_table("others", others)
 
         
         return redirect("/budgeting")

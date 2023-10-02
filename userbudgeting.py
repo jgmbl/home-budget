@@ -1,5 +1,6 @@
 import sqlite3
 import datetime
+from flask import session
 
 
 FULL_PERCENTAGE = 100
@@ -31,11 +32,12 @@ class UserBudgeting:
     
 
     """Add budgeting from form to table budgeting"""
-    def add_budgeting_to_table(self, user_id, category, value_percent):
+    def add_budgeting_to_table(self, category, value_percent):
 
         value = self.__value_percent_to_value_budgeting(value_percent)
         date = datetime.datetime.now()
         date = date.strftime('%Y-%m-%d %H:%M')
+        user_id = session["_user_id"]
 
         con = sqlite3.connect("instance/budget.db")
         cur = con.cursor()

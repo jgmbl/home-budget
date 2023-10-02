@@ -53,6 +53,7 @@ class Spendings(db.Model):
     user_database = db.relationship("User", backref=backref("user_spendings", uselist=False))
     category = db.Column(db.String(20), nullable=False)
     value = db.Column(db.Integer, nullable=False)
+    note = db.Column(db.String(100))
     date = db.Column(db.DateTime, nullable=False)
 
 
@@ -74,7 +75,6 @@ class Savings(db.Model):
     value = db.Column(db.Integer, nullable=False)
     value_summary = db.Column(db.Integer, nullable=False)
     date = db.Column(db.DateTime, nullable=False)
-
 
 
 class RegisterForm(FlaskForm):

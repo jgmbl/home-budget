@@ -8,10 +8,9 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import InputRequired, Length, ValidationError, EqualTo
 from flask_bcrypt import Bcrypt
-import getpass
-from datetime import datetime, date
+from datetime import date
 from userbudgeting import UserBudgeting
-import sys
+from userspendings import UserSpendings
 
 
 #configure database
@@ -79,7 +78,7 @@ class Savings(db.Model):
 
 class RegisterForm(FlaskForm):
     username = StringField(validators=[InputRequired(), Length(min=6, max=25)], render_kw={"placeholder": "Username"})
-    password = StringField(validators=[InputRequired(), Length(min=6, max=25)], render_kw={"placeholder": "Password"})
+    password = PasswordField(validators=[InputRequired(), Length(min=6, max=25)], render_kw={"placeholder": "Password"})
     confirm_password = StringField(validators=[InputRequired(), Length(min=6, max=25), EqualTo('password')], render_kw={"placeholder": "Confirm password"})
     submit = SubmitField("Register")
 
@@ -92,7 +91,7 @@ class RegisterForm(FlaskForm):
 
 class LoginForm(FlaskForm):
     username = StringField(validators=[InputRequired(), Length(min=6, max=25)], render_kw={"placeholder": "Username"})
-    password = StringField(validators=[InputRequired(), Length(min=6, max=25)], render_kw={"placeholder": "Password"})
+    password = PasswordField(validators=[InputRequired(), Length(min=6, max=25)], render_kw={"placeholder": "Password"})
     submit = SubmitField("Login")
 
 
@@ -175,7 +174,6 @@ def budgeting():
         logged_user.add_budgeting_to_table("education", education)
         logged_user.add_budgeting_to_table("others", others)
 
-
         return redirect("/budgeting")
     
     else:
@@ -189,6 +187,15 @@ def spendings():
     week_day = date_today.strftime('%A')
 
     if request.method == "POST":
+        #get requests from form
+        value = float(request.form.get("value"))
+        note = request.form.get("note")
+        category = request.form.get("category")
+
+        
+        logged_user_spendings = UserSpendings()
+        logged_user_spendings.add_spendings_to_table(category, value, note)
+
         return redirect("/spendings")
     
     else:

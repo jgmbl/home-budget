@@ -96,6 +96,48 @@ class LoginForm(FlaskForm):
     submit = SubmitField("Login")
 
 
+
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    form = LoginForm()
+
+    if request.method == "POST":
+        if form.validate_on_submit():
+            user = User.query.filter_by(username=form.username.data).first()
+            if user:
+                if bcrypt.check_password_hash(user.password, form.password.data):
+                    login_user(user)
+    
+                    return redirect("/")
+    
+    else:
+        return render_template("login.html", form=form)
+
+
+@app.route("/logout", methods = ["GET", "POST"])
+@login_required
+def logout():
+    logout_user()
+    return redirect("/login")
+
+
+@app.route("/register", methods=["GET", "POST"])
+def register():
+    form = RegisterForm()
+
+    if request.method == "POST":
+        if form.validate_on_submit():
+            hashed_password = bcrypt.generate_password_hash(form.password.data)
+            new_user = User(username=form.username.data, password=hashed_password)
+            db.session.add(new_user)
+            db.session.commit()
+
+            return redirect("/login")
+
+    else:
+        return render_template("register.html", form=form)
+
+
 @app.route("/", methods=["GET"])
 @login_required
 def summary():
@@ -137,50 +179,21 @@ def budgeting():
         return redirect("/budgeting")
     
     else:
-        print(budgeting_table)
         return render_template("budgeting.html", week_day=week_day, date_today=date_today, table=budgeting_table)
 
 
-@app.route("/login", methods=["GET", "POST"])
-def login():
-    form = LoginForm()
-
-    if request.method == "POST":
-        if form.validate_on_submit():
-            user = User.query.filter_by(username=form.username.data).first()
-            if user:
-                if bcrypt.check_password_hash(user.password, form.password.data):
-                    login_user(user)
-    
-                    return redirect("/")
-    
-    else:
-        return render_template("login.html", form=form)
-
-
-@app.route("/logout", methods = ["GET", "POST"])
+@app.route("/spendings", methods=["GET", "POST"])
 @login_required
-def logout():
-    logout_user()
-    return redirect("/login")
-
-
-@app.route("/register", methods=["GET", "POST"])
-def register():
-    form = RegisterForm()
+def spendings():
+    date_today = date.today()
+    week_day = date_today.strftime('%A')
 
     if request.method == "POST":
-        if form.validate_on_submit():
-            hashed_password = bcrypt.generate_password_hash(form.password.data)
-            new_user = User(username=form.username.data, password=hashed_password)
-            db.session.add(new_user)
-            db.session.commit()
-
-            return redirect("/login")
-
-    else:
-        return render_template("register.html", form=form)
+        return redirect("/spendings")
     
+    else:
+        return render_template("spendings.html", week_day=week_day, date_today=date_today)
+
 
 if __name__ == "__main__":
     app.run(debug=True)

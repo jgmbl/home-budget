@@ -1,4 +1,4 @@
-from flask import Flask, redirect, render_template, request, session, url_for, flash
+from flask import Flask, redirect, render_template, request, session, url_for, abort
 from flask_session import Session
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import select, ForeignKey
@@ -11,6 +11,7 @@ from flask_bcrypt import Bcrypt
 import getpass
 from datetime import datetime, date
 from userbudgeting import UserBudgeting
+import sys
 
 
 #configure database
@@ -118,11 +119,12 @@ def budgeting():
         others = int(request.form.get("others"))
 
         logged_user = UserBudgeting(income)
-        user_id = session["_user_id"]
 
-        #check if sum of forms is equal 100
+
+        #check errors
         if UserBudgeting.check_sum_of_percent(daily_spendings, large_spendings, investments, education, others) == False:
-            flash("Sum of fields should be equal 100", "error")
+            abort(400, "Sum of percent must be equal 100")
+
 
         #add values to table budgeting
         logged_user.add_budgeting_to_table("daily spendings", daily_spendings)

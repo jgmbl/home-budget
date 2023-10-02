@@ -12,6 +12,7 @@ import getpass
 from datetime import datetime, date
 from userbudgeting import UserBudgeting
 
+
 #configure database
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///budget.db'
@@ -58,7 +59,7 @@ class Budgeting(db.Model):
     id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     user_database = db.relationship("User", backref=backref("user_budgeting", uselist=False))
-    sum_budget = db.Column(db.Integer, nullable=False)
+    income = db.Column(db.Integer, nullable=False)
     category = db.Column(db.String(20), nullable=False)
     value = db.Column(db.Integer, nullable=False)
     value_percent = db.Column(db.Integer, nullable=False)
@@ -116,9 +117,19 @@ def budgeting():
         education = int(request.form.get("education"))
         others = int(request.form.get("others"))
 
+        logged_user = UserBudgeting(income)
+        user_id = session["_user_id"]
+
         #check if sum of forms is equal 100
         if UserBudgeting.check_sum_of_percent(daily_spendings, large_spendings, investments, education, others) == False:
             flash("Sum of fields should be equal 100", "error")
+
+        #add values to table budgeting
+        logged_user.add_budgeting_to_table(user_id, "daily spendings", daily_spendings)
+        logged_user.add_budgeting_to_table(user_id, "large spendings", large_spendings)
+        logged_user.add_budgeting_to_table(user_id, "investments", investments)
+        logged_user.add_budgeting_to_table(user_id, "education", education)
+        logged_user.add_budgeting_to_table(user_id, "others", others)
 
         
         return redirect("/budgeting")
@@ -137,6 +148,7 @@ def login():
             if user:
                 if bcrypt.check_password_hash(user.password, form.password.data):
                     login_user(user)
+    
                     return redirect("/")
     
     else:

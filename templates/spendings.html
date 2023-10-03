@@ -9,51 +9,64 @@
     <h3>Add spendings</h3>
     <div class="mb-3">
         <label for="value">Value [$]</label>
-        <input type="number" min="0" id="value" name="value" required><br><br>
+        <input type="number" min="0" step="0.01" onchange="setTwoNumberDecimal" id="value" name="value" required><br><br>
         <label for="category">Category</label>
         <select name="category" id="category">
             <option value="daily_spendings">Daily spendings</option>
-            <option value="Large_spendings">Large spensings</option>
+            <option value="large_spendings">Large spensings</option>
             <option value="investments">Investments</option>
             <option value="education">Education</option>
             <option value="others">Others</option>
           </select> <br><br>
         <label for="note">Note</label>
         <input type="text" id="note" name="note"><br><br>
-        <button class="btn btn-primary" type="submit">Add</button>
-        <br>
+        <button class="btn btn-primary" type="submit" name="add_spendings">Add</button>
+        <br><br>
     </div>
-    <h3>See spendings</h3>
-    <label for="display_spendings">Period of time</label>
-    <select name="display_spendings" id="display_spendings">
-        <option value="last_week">Last week</option>
-        <option value="last_month">Last month</option>
-        <option value="all">All</option>
-    </select> <br><br>
-    <p>Daily spendings: </p>
-    <p>Large spendings: </p>
-    <p>Investments: </p>
-    <p>Education: </p>
-    <p>Others: </p>
-    <b>TOTAL: </b>
-    <br><br>
-        <table class="table">
-            <thead>
-              <tr>
-                <th scope="col">Category</th>
-                <th scope="col">Value</th>
-                <th scope="col">Date</th>
-              </tr>
-            </thead>
-            <tbody>
-                <tr>
-                  <td>temp</td>
-                  <td>temp</td>
-                  <td>temp</td>
-                </tr>
-            </tbody>
-        </table>
-    <br>
-</form> 
+</form>
 
+<form action="/spendings" method="post">
+    <h3>See spendings</h3>
+        <div class="mb-3">
+            <label for="display_spendings">Period of time</label>
+            <select name="display_spendings" id="display_spendings">
+                <option value="last_week" id="last_week">Last week</option>
+                <option value="last_month" id="last_month">Last month</option>
+                <option value="all" id="all">All</option>
+            </select>
+            <br><br>
+            <button class="btn btn-primary" type="submit" name="see_spendings">See results</button>
+        </div>
+        <br>
+        <p>Daily spendings: </p>
+        <p>Large spendings: </p>
+        <p>Investments: </p>
+        <p>Education: </p>
+        <p>Others: </p>
+        <b>TOTAL: </b>
+        <br><br>
+            <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">Category</th>
+                    <th scope="col">Value</th>
+                    <th scope="col">Note</th>
+                    <th scope="col">Date</th>
+                  </tr>
+                </thead>
+                <tbody>
+                    {% if display_spendings == "last_month" %}
+                        {% for data in display_data_month %}
+                            <tr>
+                              <td>{{ data[0] }}</td>
+                              <td>{{ data[1] }}</td>
+                              <td>{{ data[2] }}</td>
+                              <td>{{ data[3] }}</td>
+                            </tr>
+                        {% endfor %}
+                    {% endif %}
+                </tbody>
+            </table>
+        <br>
+</form>
 {% endblock %}

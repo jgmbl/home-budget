@@ -183,23 +183,32 @@ def budgeting():
 @app.route("/spendings", methods=["GET", "POST"])
 @login_required
 def spendings():
+    logged_user_spendings = UserSpendings()
+    last_month_spendings = []
+    display_spendings = ""
+
     date_today = date.today()
     week_day = date_today.strftime('%A')
 
     if request.method == "POST":
+        if "add_spendings" in request.form:
         #get requests from form
-        value = float(request.form.get("value"))
-        note = request.form.get("note")
-        category = request.form.get("category")
+            value = float(request.form.get("value"))
+            note = request.form.get("note")
+            category = request.form.get("category")
+            
 
+            #add data to table spendings
+            logged_user_spendings.add_spendings_to_table(category, value, note)
+
+        elif "see_spendings" in request.form:
+            display_spendings = request.form.get("display_spendings")
+            print(display_spendings)
         
-        logged_user_spendings = UserSpendings()
-        logged_user_spendings.add_spendings_to_table(category, value, note)
-
         return redirect("/spendings")
     
     else:
-        return render_template("spendings.html", week_day=week_day, date_today=date_today)
+        return render_template("spendings.html", week_day=week_day, date_today=date_today, display_spendings=display_spendings, display_data_month=last_month_spendings)
 
 
 if __name__ == "__main__":

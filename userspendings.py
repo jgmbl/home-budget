@@ -9,6 +9,7 @@ class UserSpendings:
         self.current_month = datetime.datetime.now().month
         self.current_year = datetime.datetime.now().year
 
+
     """Add spendings from form to table spendings"""
     def add_spendings_to_table(self, category, value, note):
 
@@ -28,8 +29,7 @@ class UserSpendings:
         today = datetime.datetime.today()
         current_month = today.strftime("%m")
 
-        #user_id = session["_user_id"]
-        user_id = 1
+        user_id = session["_user_id"]
 
         con = sqlite3.connect("instance/budget.db")
         cur = con.cursor()
@@ -41,23 +41,19 @@ class UserSpendings:
         return selected_spendings
 
 
-    def __current_week_days(self):
-        """Returns a list of days in week to current day"""
-        #[[day, month, year]]
+    def get_spendings_from_current_week(self):
+        today = datetime.datetime.today()
+        week_num_today = today.isocalendar()[1]
+        year_today = today.year
 
-        month_days = calendar.monthcalendar(self.current_year, self.current_month)
+        user_id = session["_user_id"]
 
-        week_day = []
-        week_single_day = []
-        week_all_days = []
+        con = sqlite3.connect("instance/budget.db")
+        cur = con.cursor()
 
-        for week in month_days:
-            if self.current_day in week:
-                week_day = week
+        #select_spendings = cur.execute("SELECT category, value, note, date FROM spendings WHERE user_id = ? AND strftime('%Y', date) = ? AND strftime('%W', date) = ?", (user_id, year_today, week_num_today))
+        select_spendings = cur.execute("SELECT category, value FROM spendings WHERE user_id = ? AND strftime('%Y', date) = ? AND strftime('%W', date) = ?;", (user_id, str(year_today), str(week_num_today)))
+        selected_spendings = select_spendings.fetchall()
+        con.close()
 
-        for day in week_day:
-            week_single_day = [day, calendar.month_name[self.current_month], self.current_year]
-            week_all_days.append(week_single_day)
-
-        return week_all_days
-    
+        return selected_spendings

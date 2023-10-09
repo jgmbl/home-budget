@@ -64,6 +64,15 @@
                               <td>{{ data[3] }}</td>
                             </tr>
                         {% endfor %}
+                    {% else %}
+                        {% for data in display_data_month %}
+                        <tr>
+                          <td>{{ data[0] }}</td>
+                          <td>{{ data[1] }}</td>
+                          <td>{{ data[2] }}</td>
+                          <td>{{ data[3] }}</td>
+                        </tr>
+                        {% endfor %}
                     {% endif %}
                 </tbody>
             </table>

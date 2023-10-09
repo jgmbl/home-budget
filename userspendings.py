@@ -51,8 +51,7 @@ class UserSpendings:
         con = sqlite3.connect("instance/budget.db")
         cur = con.cursor()
 
-        #select_spendings = cur.execute("SELECT category, value, note, date FROM spendings WHERE user_id = ? AND strftime('%Y', date) = ? AND strftime('%W', date) = ?", (user_id, year_today, week_num_today))
-        select_spendings = cur.execute("SELECT category, value FROM spendings WHERE user_id = ? AND strftime('%Y', date) = ? AND strftime('%W', date) = ?;", (user_id, str(year_today), str(week_num_today)))
+        select_spendings = cur.execute("SELECT category, value, note, date FROM spendings WHERE user_id = ? AND strftime('%Y', date) = ? AND strftime('%W', date) = ?;", (user_id, str(year_today), str(week_num_today)))
         selected_spendings = select_spendings.fetchall()
         con.close()
 

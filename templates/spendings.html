@@ -9,7 +9,7 @@
     <h3>Add spendings</h3>
     <div class="mb-3">
         <label for="value">Value [$]</label>
-        <input type="number" min="0" step="0.01" onchange="setTwoNumberDecimal" id="value" name="value" required><br><br>
+        <input type="number" min="0.01" step="0.01" onchange="setTwoNumberDecimal" id="value" name="value" required><br><br>
         <label for="category">Category</label>
         <select name="category" id="category">
             <option value="daily_spendings">Daily spendings</option>
@@ -64,14 +64,23 @@
                               <td>{{ data[3] }}</td>
                             </tr>
                         {% endfor %}
-                    {% else %}
-                        {% for data in display_data_month %}
-                        <tr>
-                          <td>{{ data[0] }}</td>
-                          <td>{{ data[1] }}</td>
-                          <td>{{ data[2] }}</td>
-                          <td>{{ data[3] }}</td>
-                        </tr>
+                    {% elif display_spendings == "last_week" %}
+                        {% for data in display_data_week %}
+                            <tr>
+                              <td>{{ data[0] }}</td>
+                              <td>{{ data[1] }}</td>
+                              <td>{{ data[2] }}</td>
+                              <td>{{ data[3] }}</td>
+                            </tr>
+                        {% endfor %}
+                    {% elif daily_spendings == "all" %}
+                        {% for data in display_all_data %}
+                            <tr>
+                              <td>{{ data[0] }}</td>
+                              <td>{{ data[1] }}</td>
+                              <td>{{ data[2] }}</td>
+                              <td>{{ data[3] }}</td>
+                            </tr>
                         {% endfor %}
                     {% endif %}
                 </tbody>

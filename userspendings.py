@@ -56,3 +56,17 @@ class UserSpendings:
         con.close()
 
         return selected_spendings
+
+
+    def get_all_spendings(self):
+        user_id = session["_user_id"]
+
+        con = sqlite3.connect("instance/budget.db")
+        cur = con.cursor()
+
+        select_spendings = cur.execute("SELECT category, value, note, date FROM spendings WHERE user_id = ?;", (user_id, ))
+        selected_spendings = select_spendings.fetchall()
+        con.close()
+
+        return selected_spendings
+    

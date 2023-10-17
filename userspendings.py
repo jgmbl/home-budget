@@ -70,3 +70,112 @@ class UserSpendings:
 
         return selected_spendings
     
+
+    def sum_of_categories_from_current_month(self):
+        data = self.get_spendings_from_current_month()
+
+        sum_daily_spendings = 0.00
+        sum_large_spendings = 0.00
+        sum_investments = 0.00
+        sum_education = 0.00
+        sum_others = 0.00
+        sum_total = 0.00
+
+        for i in data:
+            if i[0] == 'daily_spendings':
+                sum_daily_spendings += i[1] 
+
+            elif i[0] == "large_spendings":
+                sum_large_spendings += i[1]
+
+            elif i[0] == "investments":
+                sum_investments += i[1]
+
+            elif i[0] == "education":
+                sum_education += i[1]
+
+            elif i[0] == "others":
+                sum_others += i[1]
+
+        for i in data:
+            sum_total += i[1]
+
+
+        categories_month = {'daily_spendings': sum_daily_spendings, 'large_spendings': sum_large_spendings, 'investments': sum_investments, 'education': sum_education, 'others': sum_others, 'total': sum_total}
+
+        return categories_month
+    
+
+    def sum_of_categories_from_current_week(self):
+        data = self.get_spendings_from_current_week()
+
+        sum_daily_spendings = 0.00
+        sum_large_spendings = 0.00
+        sum_investments = 0.00
+        sum_education = 0.00
+        sum_others = 0.00
+        sum_total = 0.00
+
+        for i in data:
+            if i[0] == 'daily_spendings':
+                sum_daily_spendings += i[1] 
+
+            elif i[0] == "large_spendings":
+                sum_large_spendings += i[1]
+
+            elif i[0] == "investments":
+                sum_investments += i[1]
+
+            elif i[0] == "education":
+                sum_education += i[1]
+
+            elif i[0] == "others":
+                sum_others += i[1]
+
+        for i in data:
+            sum_total += i[1]
+
+
+        categories_week = {'daily_spendings': sum_daily_spendings, 'large_spendings': sum_large_spendings, 'investments': sum_investments, 'education': sum_education, 'others': sum_others, 'total': sum_total}
+
+        return categories_week
+    
+
+    def sum_of_categories_all(self):
+        data = self.get_all_spendings()
+
+        sum_daily_spendings = 0.00
+        sum_large_spendings = 0.00
+        sum_investments = 0.00
+        sum_education = 0.00
+        sum_others = 0.00
+        sum_total = 0.00
+
+        for i in data:
+            if i[0] == 'daily_spendings':
+                sum_daily_spendings += i[1] 
+
+            elif i[0] == "large_spendings":
+                sum_large_spendings += i[1]
+
+            elif i[0] == "investments":
+                sum_investments += i[1]
+
+            elif i[0] == "education":
+                sum_education += i[1]
+
+            elif i[0] == "others":
+                sum_others += i[1]
+
+        for i in data:
+            sum_total += i[1]
+
+
+        categories_all = {'daily_spendings': sum_daily_spendings, 'large_spendings': sum_large_spendings, 'investments': sum_investments, 'education': sum_education, 'others': sum_others, 'total': sum_total}
+
+        return categories_all 
+    
+spendings = UserSpendings()
+print(spendings.sum_of_categories_from_current_month())
+print(spendings.sum_of_categories_from_current_week())
+print(spendings.sum_of_categories_all())

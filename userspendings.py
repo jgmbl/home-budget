@@ -174,8 +174,3 @@ class UserSpendings:
         categories_all = {'daily_spendings': sum_daily_spendings, 'large_spendings': sum_large_spendings, 'investments': sum_investments, 'education': sum_education, 'others': sum_others, 'total': sum_total}
 
         return categories_all 
-    
-spendings = UserSpendings()
-print(spendings.sum_of_categories_from_current_month())
-print(spendings.sum_of_categories_from_current_week())
-print(spendings.sum_of_categories_all())

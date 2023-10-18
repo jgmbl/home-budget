@@ -71,7 +71,8 @@ class UserSpendings:
         return selected_spendings
     
 
-    def sum_of_categories_from_current_month(self):
+    @property
+    def __sum_of_categories_from_current_month(self):
         data = self.get_spendings_from_current_month()
 
         sum_daily_spendings = 0.00
@@ -106,7 +107,8 @@ class UserSpendings:
         return categories_month
     
 
-    def sum_of_categories_from_current_week(self):
+    @property
+    def __sum_of_categories_from_current_week(self):
         data = self.get_spendings_from_current_week()
 
         sum_daily_spendings = 0.00
@@ -141,7 +143,8 @@ class UserSpendings:
         return categories_week
     
 
-    def sum_of_categories_all(self):
+    @property
+    def __sum_of_categories_all(self):
         data = self.get_all_spendings()
 
         sum_daily_spendings = 0.00
@@ -174,3 +177,18 @@ class UserSpendings:
         categories_all = {'daily_spendings': sum_daily_spendings, 'large_spendings': sum_large_spendings, 'investments': sum_investments, 'education': sum_education, 'others': sum_others, 'total': sum_total}
 
         return categories_all 
+
+
+
+    def display_sum_of_categories(self, period):
+        sum_by_period = {}
+        if period == "last_month":
+            sum_by_period = self.__sum_of_categories_from_current_month
+
+        elif period == "last_week":
+            sum_by_period = self.__sum_of_categories_from_current_week
+
+        elif period == "all":
+            sum_by_period = self.__sum_of_categories_all
+
+        return sum_by_period

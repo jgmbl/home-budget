@@ -207,10 +207,14 @@ def spendings():
 @login_required
 def show_spendings():
     logged_user_spendings = UserSpendings()
+
     current_month_spendings = logged_user_spendings.get_spendings_from_current_month()
     current_week_spendings = logged_user_spendings.get_spendings_from_current_week()
     all_spendings = logged_user_spendings.get_all_spendings()
+
     period = ""
+    sum_categories = {}
+    
 
     date_today = date.today()
     week_day = date_today.strftime('%A')
@@ -229,8 +233,18 @@ def show_spendings():
         elif display_spendings == "all":
             period_of_spendings = all_spendings
             period = "all periods"
+
+        sum_categories = logged_user_spendings.display_sum_of_categories(display_spendings)
+
+        daily_spendings = sum_categories["daily_spendings"]
+        large_spendings = sum_categories["large_spendings"]
+        investments = sum_categories["investments"]
+        education = sum_categories["education"]
+        others = sum_categories["others"]
+        total = sum_categories["total"]
+
             
-        return render_template("showspendings.html", week_day=week_day, date_today=date_today, display_data=period_of_spendings, period=period)
+        return render_template("showspendings.html", week_day=week_day, date_today=date_today, display_data=period_of_spendings, period=period, daily_spendings=daily_spendings, large_spendings=large_spendings, investments=investments, education=education, others=others, total=total)
     
     else:
         return render_template("showspendings.html", week_day=week_day, date_today=date_today)

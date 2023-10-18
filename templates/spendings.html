@@ -3,7 +3,7 @@
 
 {% block body %}
 <form action="/spendings" method="post">
-    <h1>Spendings</h1>
+    <h1>Add spendings</h1>
     <p>Today is {{ week_day }}, {{ date_today }}.</p>
     <br>
     <h3>Add spendings</h3>
@@ -22,70 +22,11 @@
         <input type="text" id="note" name="note"><br><br>
         <button class="btn btn-primary" type="submit" name="add_spendings">Add</button>
         <br><br>
+        <h3>Check spendings</h3>
+        <p>Click the button to check spendings.</p>
+        <a class="btn btn-primary" href="/showspendings">Click here</a>
+        <br><br>
     </div>
 </form>
 
-<form action="/spendings" method="post">
-    <h3>See spendings</h3>
-        <div class="mb-3">
-            <label for="display_spendings">Period of time</label>
-            <select name="display_spendings" id="display_spendings">
-                <option value="choose" disabled selected>Choose</option>
-                <option value="last_week" id="last_week">Last week</option>
-                <option value="last_month" id="last_month">Last month</option>
-                <option value="all" id="all">All</option>
-            </select>
-            <br><br>
-            <button class="btn btn-primary" type="submit" name="see_spendings">See results</button>
-        </div>
-        <br>
-        <p>Daily spendings: </p>
-        <p>Large spendings: </p>
-        <p>Investments: </p>
-        <p>Education: </p>
-        <p>Others: </p>
-        <b>TOTAL: </b>
-        <br><br>
-            <table class="table">
-                <thead>
-                  <tr>
-                    <th scope="col">Category</th>
-                    <th scope="col">Value</th>
-                    <th scope="col">Note</th>
-                    <th scope="col">Date</th>
-                  </tr>
-                </thead>
-                <tbody>
-                    {% if display_spendings == "last_month" %}
-                        {% for data in display_data_month %}
-                            <tr>
-                              <td>{{ data[0] }}</td>
-                              <td>{{ data[1] }}</td>
-                              <td>{{ data[2] }}</td>
-                              <td>{{ data[3] }}</td>
-                            </tr>
-                        {% endfor %}
-                    {% elif display_spendings == "last_week" %}
-                        {% for data in display_data_week %}
-                            <tr>
-                              <td>{{ data[0] }}</td>
-                              <td>{{ data[1] }}</td>
-                              <td>{{ data[2] }}</td>
-                              <td>{{ data[3] }}</td>
-                            </tr>
-                        {% endfor %}
-                    {% elif daily_spendings == "all" %}
-                        {% for data in display_all_data %}
-                            <tr>
-                              <td>{{ data[0] }}</td>
-                              <td>{{ data[1] }}</td>
-                              <td>{{ data[2] }}</td>
-                              <td>{{ data[3] }}</td>
-                            </tr>
-                        {% endfor %}
-                    {% endif %}
-                </tbody>
-            </table>
-        <br>
-</form>
 {% endblock %}

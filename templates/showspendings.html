@@ -1,0 +1,53 @@
+{% extends "index.html" %}
+{% block title %} Show spendings {% endblock %}
+
+{% block body %}
+<form action="/showspendings" method="post">
+    <h1>Spendings</h1>
+    <p>Today is {{ week_day }}, {{ date_today }}.</p>
+    <br>
+    <h3>Check spendings</h3>
+        <div class="mb-3">
+            <label for="display_spendings">Period of time</label>
+            <select name="display_spendings">
+                <option value="choose" disabled selected>Choose</option>
+                <option value="last_week">Last week</option>
+                <option value="last_month">Last month</option>
+                <option value="all">All periods</option>
+            </select>
+            <br><br>
+            <button class="btn btn-primary" type="submit">See results</button>
+        </div>
+        <br>
+        <h5>Period: {{ period }}</h5>
+        <br>
+        <p>Daily spendings: </p>
+        <p>Large spendings: </p>
+        <p>Investments: </p>
+        <p>Education: </p>
+        <p>Others: </p>
+        <b>TOTAL: </b>
+        <br><br>
+            <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">Category</th>
+                    <th scope="col">Value</th>
+                    <th scope="col">Note</th>
+                    <th scope="col">Date</th>
+                  </tr>
+                </thead>
+                <tbody>
+                    {% for data in display_data %}
+                        <tr>
+                          <td>{{ data[0] }}</td>
+                          <td>{{ data[1] }}</td>
+                          <td>{{ data[2] }}</td>
+                          <td>{{ data[3] }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        <br>
+</form>
+{% endblock %}

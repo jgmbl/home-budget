@@ -13,6 +13,7 @@ from userbudgeting import UserBudgeting
 from userspendings import UserSpendings
 
 
+
 #configure database
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///budget.db'
@@ -184,31 +185,55 @@ def budgeting():
 @login_required
 def spendings():
     logged_user_spendings = UserSpendings()
-    display_spendings = ""
-    current_month_spendings = logged_user_spendings.get_spendings_from_current_month()
-    
 
     date_today = date.today()
     week_day = date_today.strftime('%A')
 
     if request.method == "POST":
-        if "add_spendings" in request.form:
         #get requests from form
-            value = float(request.form.get("value"))
-            note = request.form.get("note")
-            category = request.form.get("category")
-
-            #add data to table spendings
-            logged_user_spendings.add_spendings_to_table(category, value, note)
-
-        elif "see_spendings" in request.form:
-            display_spendings = request.form.get("display_spendings")
+        value = float(request.form.get("value"))
+        note = request.form.get("note")
+        category = request.form.get("category")
+        #add data to table spendings
+        logged_user_spendings.add_spendings_to_table(category, value, note)
             
         return redirect("/spendings")
     
     else:
-        return render_template("spendings.html", week_day=week_day, date_today=date_today, display_spendings=display_spendings, display_data_month=current_month_spendings)
+        return render_template("spendings.html", week_day=week_day, date_today=date_today)
 
+
+@app.route("/showspendings", methods=["GET", "POST"])
+@login_required
+def show_spendings():
+    logged_user_spendings = UserSpendings()
+    current_month_spendings = logged_user_spendings.get_spendings_from_current_month()
+    current_week_spendings = logged_user_spendings.get_spendings_from_current_week()
+    all_spendings = logged_user_spendings.get_all_spendings()
+    period = ""
+
+    date_today = date.today()
+    week_day = date_today.strftime('%A')
+
+    if request.method == "POST":
+        display_spendings = request.form.get("display_spendings")
+        
+        if display_spendings == "last_month":
+            period_of_spendings = current_month_spendings
+            period = "last month"
+
+        elif display_spendings == "last_week":
+            period_of_spendings = current_week_spendings
+            period = "last week"
+
+        elif display_spendings == "all":
+            period_of_spendings = all_spendings
+            period = "all periods"
+            
+        return render_template("showspendings.html", week_day=week_day, date_today=date_today, display_data=period_of_spendings, period=period)
+    
+    else:
+        return render_template("showspendings.html", week_day=week_day, date_today=date_today)
 
 if __name__ == "__main__":
     app.run(debug=True)

@@ -103,8 +103,7 @@ class UserSavings:
 
     """Display all history from savings"""
     def display_data_table_savings(self):
-        #user_id = session["_user_id"]
-        user_id = 1
+        user_id = session["_user_id"]
 
         con = sqlite3.connect("instance/budget.db")
         cur = con.cursor()

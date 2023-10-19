@@ -1,6 +1,7 @@
 from flask import session
 import datetime
 import sqlite3
+import calendar
 
 class UserSavings:
 
@@ -49,7 +50,7 @@ class UserSavings:
 
     """Sum of savings in current month"""
     @property
-    def sum_of_savings_current_month(self):
+    def __sum_of_savings_current_month(self):
         user_id = session["_user_id"]
 
         today = datetime.datetime.today()
@@ -72,7 +73,7 @@ class UserSavings:
 
     """Return total sum of savings"""
     @property
-    def total_sum_of_savings(self):
+    def __total_sum_of_savings(self):
         user_id = session["_user_id"]
 
         con = sqlite3.connect("instance/budget.db")
@@ -84,5 +85,19 @@ class UserSavings:
         con.close()
 
         return total_sum_savings[0][0]
+
+
+    """Return dictionary of month savings information"""
+    @property
+    def display_current_month_information(self):
+        current_month_name = calendar.month_name[datetime.datetime.today().month]
+
+        try:
+            current_month_information = {"month": current_month_name, "value": round(self.__sum_of_savings_current_month, 2), "value_total": round(self.__total_sum_of_savings, 2)}
+
+        except:
+            current_month_information = {"month": current_month_name, "value": round(0, 2), "value_total": round(0, 2)}
+
+        return current_month_information
 
 

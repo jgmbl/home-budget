@@ -47,8 +47,9 @@ class UserSavings:
         con.close()
 
 
-    """Sum of savings in month"""
-    def sum_of_savings_month(self):
+    """Sum of savings in current month"""
+    @property
+    def sum_of_savings_current_month(self):
         user_id = session["_user_id"]
 
         today = datetime.datetime.today()
@@ -67,3 +68,21 @@ class UserSavings:
             sum_of_values += value[0]
 
         return sum_of_values
+
+
+    """Return total sum of savings"""
+    @property
+    def total_sum_of_savings(self):
+        user_id = session["_user_id"]
+
+        con = sqlite3.connect("instance/budget.db")
+        cur = con.cursor()
+
+        cur.execute("SELECT value_summary FROM savings WHERE user_id = ? ORDER BY id DESC LIMIT 1", (user_id, ))
+        total_sum_savings = cur.fetchall()
+
+        con.close()
+
+        return total_sum_savings[0][0]
+
+

@@ -4,6 +4,42 @@
 {% block body %}
 <form action="/savings" method="post">
     <h1>Savings</h1>
+    <p>Today is {{ week_day }}, {{ date_today }}.</p>
+    <br>
+    <h3>Add savings</h3>
+    <p>Add savings from current month.</p>
+    <div class="mb-3">
+        <label for="value">Value [$]</label>
+        <input type="number" min="0.01" step="0.01" onchange="setTwoNumberDecimal" id="value" name="value" required>
+        <button class="btn btn-primary" type="submit">Add</button>
+    </div>
+    <br><br>
+    <h3>Current month savings</h3>
+    <p>Check your spendings.</p>
+    <p>Month: </p>
+    <p>Value [$]: </p>
+    <b>TOTAL: </b>
+    <br><br><br>
+    <h3>History</h3>
+    <p>Check history of savings.</p>
+    <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Value</th>
+            <th scope="col">Summary</th>
+            <th scope="col">Date</th>
+          </tr>
+        </thead>
+        <tbody>
+            {% for data in display_data %}
+                <tr>
+                  <td>{{ data[0] }}</td>
+                  <td>{{ data[1] }}</td>
+                  <td>{{ data[2] }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 </form> 
 
 {% endblock %}

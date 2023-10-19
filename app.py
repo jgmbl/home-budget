@@ -11,6 +11,7 @@ from flask_bcrypt import Bcrypt
 from datetime import date
 from userbudgeting import UserBudgeting
 from userspendings import UserSpendings
+from usersavings import UserSavings
 
 
 
@@ -80,7 +81,7 @@ class Savings(db.Model):
 class RegisterForm(FlaskForm):
     username = StringField(validators=[InputRequired(), Length(min=6, max=25)], render_kw={"placeholder": "Username"})
     password = PasswordField(validators=[InputRequired(), Length(min=6, max=25)], render_kw={"placeholder": "Password"})
-    confirm_password = StringField(validators=[InputRequired(), Length(min=6, max=25), EqualTo('password')], render_kw={"placeholder": "Confirm password"})
+    confirm_password = PasswordField(validators=[InputRequired(), Length(min=6, max=25), EqualTo('password')], render_kw={"placeholder": "Confirm password"})
     submit = SubmitField("Register")
 
     def validate_username(self, username):
@@ -214,7 +215,6 @@ def show_spendings():
 
     period = ""
     sum_categories = {}
-    
 
     date_today = date.today()
     week_day = date_today.strftime('%A')
@@ -248,6 +248,27 @@ def show_spendings():
     
     else:
         return render_template("showspendings.html", week_day=week_day, date_today=date_today)
+
+
+@app.route("/savings", methods=["GET", "POST"])
+@login_required
+def savings():
+    logged_user_savings = UserSavings()
+
+    date_today = date.today()
+    week_day = date_today.strftime('%A')
+
+    if request.method == "POST":
+        value = float(request.form.get("value"))
+
+        #add data to table
+        logged_user_savings.add_data_to_table(value)
+
+        return redirect("/savings")
+    
+    else:
+        return render_template("savings.html", week_day=week_day, date_today=date_today)
+
 
 if __name__ == "__main__":
     app.run(debug=True)

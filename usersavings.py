@@ -101,3 +101,17 @@ class UserSavings:
         return current_month_information
 
 
+    """Display all history from savings"""
+    def display_data_table_savings(self):
+        #user_id = session["_user_id"]
+        user_id = 1
+
+        con = sqlite3.connect("instance/budget.db")
+        cur = con.cursor()
+
+        cur.execute("SELECT value, value_summary, date FROM savings WHERE user_id = ?", (user_id, ))
+        data_from_table = cur.fetchall()
+
+        con.close()
+
+        return data_from_table

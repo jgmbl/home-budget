@@ -18,7 +18,7 @@ class UserSavings:
         return content_of_table[0][0]
     
 
-    """Add data to table spendings"""
+    """Add data to table savings"""
     def add_data_to_table(self, value):
         user_id = session["_user_id"]
 
@@ -45,3 +45,25 @@ class UserSavings:
             con.commit()
         
         con.close()
+
+
+    """Sum of savings in month"""
+    def sum_of_savings_month(self):
+        user_id = session["_user_id"]
+
+        today = datetime.datetime.today()
+        current_month = today.strftime("%m")
+
+        con = sqlite3.connect("instance/budget.db")
+        cur = con.cursor()
+
+
+        cur.execute("SELECT value FROM savings WHERE user_id = ? AND strftime('%m', date) = ?", (user_id, current_month))
+        values_from_current_month = cur.fetchall()
+        con.close()
+        
+        sum_of_values = 0
+        for value in values_from_current_month:
+            sum_of_values += value[0]
+
+        return sum_of_values

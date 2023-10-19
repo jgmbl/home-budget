@@ -9,6 +9,8 @@ from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import InputRequired, Length, ValidationError, EqualTo
 from flask_bcrypt import Bcrypt
 from datetime import date
+import datetime
+import calendar
 from userbudgeting import UserBudgeting
 from userspendings import UserSpendings
 from usersavings import UserSavings
@@ -258,16 +260,24 @@ def savings():
     date_today = date.today()
     week_day = date_today.strftime('%A')
 
+    month_information = {}
+
     if request.method == "POST":
         value = float(request.form.get("value"))
 
         #add data to table
         logged_user_savings.add_data_to_table(value)
 
-        return redirect("/savings")
+        #add data to current month savings
+        month_information = logged_user_savings.display_current_month_information
+
+        return render_template("savings.html", week_day=week_day, date_today=date_today, month_information=month_information)
     
     else:
-        return render_template("savings.html", week_day=week_day, date_today=date_today)
+        #add data to current month savings
+        month_information = logged_user_savings.display_current_month_information
+        return render_template("savings.html", week_day=week_day, date_today=date_today,month_information=month_information)
+    
 
 
 if __name__ == "__main__":

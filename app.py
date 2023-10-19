@@ -268,15 +268,17 @@ def savings():
         #add data to table
         logged_user_savings.add_data_to_table(value)
 
-        #add data to current month savings
-        month_information = logged_user_savings.display_current_month_information
 
-        return render_template("savings.html", week_day=week_day, date_today=date_today, month_information=month_information)
+        return redirect("/savings")
     
     else:
         #add data to current month savings
         month_information = logged_user_savings.display_current_month_information
-        return render_template("savings.html", week_day=week_day, date_today=date_today,month_information=month_information)
+
+        #add data to history table
+        display_data_to_table = logged_user_savings.display_data_table_savings()
+
+        return render_template("savings.html", week_day=week_day, date_today=date_today,month_information=month_information, display_data=display_data_to_table)
     
 
 

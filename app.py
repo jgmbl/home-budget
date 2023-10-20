@@ -152,10 +152,10 @@ def summary():
 
     current_month_savings = logged_user_savings.sum_of_savings_current_month
     current_month_spendings = logged_user_spendings.sum_of_categories_from_current_month
-
+    current_month_income = UserBudgeting.display_last_income()
     current_month_budgeting = UserBudgeting.display_budgeting()
 
-    return render_template("summary.html", week_day=week_day, date_today=date_today, savings=current_month_savings, budgeting=current_month_budgeting, spendings=current_month_spendings)
+    return render_template("summary.html", week_day=week_day, date_today=date_today, savings=current_month_savings, budgeting=current_month_budgeting, spendings=current_month_spendings, income=current_month_income)
 
 
 @app.route("/budgeting", methods=["GET", "POST"])

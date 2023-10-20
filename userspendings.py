@@ -72,7 +72,7 @@ class UserSpendings:
     
 
     @property
-    def __sum_of_categories_from_current_month(self):
+    def sum_of_categories_from_current_month(self):
         data = self.get_spendings_from_current_month()
 
         sum_daily_spendings = 0.00
@@ -183,7 +183,7 @@ class UserSpendings:
     def display_sum_of_categories(self, period):
         sum_by_period = {}
         if period == "last_month":
-            sum_by_period = self.__sum_of_categories_from_current_month
+            sum_by_period = self.sum_of_categories_from_current_month
 
         elif period == "last_week":
             sum_by_period = self.__sum_of_categories_from_current_week

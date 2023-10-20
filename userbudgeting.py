@@ -57,7 +57,7 @@ class UserBudgeting:
         cur = con.cursor()
         
 
-        budgeting = cur.execute("SELECT category, value, value_percent, date FROM budgeting WHERE user_id = ?", (user_id,))
+        budgeting = cur.execute("SELECT category, value, value_percent, date FROM budgeting WHERE user_id = ? ORDER BY DATE DESC LIMIT 5", (user_id,))
         budgeting_table = budgeting.fetchall()
         con.close()
 

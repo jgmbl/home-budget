@@ -7,9 +7,10 @@
     <p>Today is {{ week_day }}, {{ date_today }}.</p>
     <p>This is current month summary.</p>
     <br>
-    <h3>Income and savings</h3>
+    <h3>Income, savings and spendings</h3>
     <p><b>Income: $</b></p>
     <p><b>Savings: {{ savings }}$</b></p>
+    <p><b>Spendings: {{ spendings["total"] }}$</b></p>
     <br>
     <h3>Budgeting</h3>
     <p>Daily spendings: {{ budgeting[0][1] }}$</p>
@@ -19,11 +20,11 @@
     <p>Others: {{ budgeting[4][1] }}$</p>
     <br>
     <h3>Spendings</h3>
-    <p>Daily spendings: $</p>
-    <p>Large spendings: $</p>
-    <p>Investments: $</p>
-    <p>Education: $</p>
-    <p>Others: $</p>
+    <p>Daily spendings: {{ spendings["daily_spendings"] }}$</p>
+    <p>Large spendings: {{ spendings["large_spendings"] }}$</p>
+    <p>Investments: {{ spendings["investments"] }}$</p>
+    <p>Education: {{ spendings["education"] }}$</p>
+    <p>Others: {{ spendings["others"] }}$</p>
 </form> 
 
 {% endblock %}

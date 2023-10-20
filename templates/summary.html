@@ -9,14 +9,14 @@
     <br>
     <h3>Income and savings</h3>
     <p><b>Income: $</b></p>
-    <p><b>Savings: $</b></p>
+    <p><b>Savings: {{ savings }}$</b></p>
     <br>
     <h3>Budgeting</h3>
-    <p>Daily spendings: $</p>
-    <p>Large spendings: $</p>
-    <p>Investments: $</p>
-    <p>Education: $</p>
-    <p>Others: $</p>
+    <p>Daily spendings: {{ budgeting[0][1] }}$</p>
+    <p>Large spendings: {{ budgeting[1][1] }}$</p>
+    <p>Investments: {{ budgeting[2][1] }}$</p>
+    <p>Education: {{ budgeting[3][1] }}$</p>
+    <p>Others: {{ budgeting[4][1] }}$</p>
     <br>
     <h3>Spendings</h3>
     <p>Daily spendings: $</p>

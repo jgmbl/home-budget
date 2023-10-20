@@ -144,7 +144,17 @@ def register():
 @app.route("/", methods=["GET"])
 @login_required
 def summary():
-    return render_template("summary.html")
+    date_today = date.today()
+    week_day = date_today.strftime('%A')
+
+    logged_user_savings = UserSavings()
+
+    #sum of current month spendings
+    current_month_savings = logged_user_savings.sum_of_savings_current_month
+
+    current_month_budgeting = UserBudgeting.display_budgeting()
+
+    return render_template("summary.html", week_day=week_day, date_today=date_today, savings=current_month_savings, budgeting=current_month_budgeting)
 
 
 @app.route("/budgeting", methods=["GET", "POST"])

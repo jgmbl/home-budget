@@ -48,7 +48,7 @@ class UserBudgeting:
         return True
     
 
-    """Show category, value and value_percent from table budgeting to table on website"""
+    """Display category, value and value_percent from table budgeting to table on website"""
     @staticmethod
     def display_budgeting():
         user_id = session["_user_id"]
@@ -63,7 +63,24 @@ class UserBudgeting:
 
         return budgeting_table
     
+    
+    """Display last income"""
+    @staticmethod
+    def display_last_income():
+        #user_id = session["_user_id"]
+        user_id = 1
 
+        con = sqlite3.connect("instance/budget.db")
+        cur = con.cursor()
+        
+
+        income = cur.execute("SELECT income FROM budgeting WHERE user_id = ? ORDER BY DATE DESC LIMIT 1", (user_id,))
+        last_income = income.fetchall()
+        con.close()
+
+        return last_income[0][0]
+
+print(UserBudgeting.display_last_income())
 
 
 

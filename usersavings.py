@@ -50,7 +50,7 @@ class UserSavings:
 
     """Sum of savings in current month"""
     @property
-    def __sum_of_savings_current_month(self):
+    def sum_of_savings_current_month(self):
         user_id = session["_user_id"]
 
         today = datetime.datetime.today()
@@ -93,7 +93,7 @@ class UserSavings:
         current_month_name = calendar.month_name[datetime.datetime.today().month]
 
         try:
-            current_month_information = {"month": current_month_name, "value": round(self.__sum_of_savings_current_month, 2), "value_total": round(self.__total_sum_of_savings, 2)}
+            current_month_information = {"month": current_month_name, "value": round(self.sum_of_savings_current_month, 2), "value_total": round(self.__total_sum_of_savings, 2)}
 
         except:
             current_month_information = {"month": current_month_name, "value": round(0, 2), "value_total": round(0, 2)}

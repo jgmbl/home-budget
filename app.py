@@ -14,6 +14,7 @@ import calendar
 from userbudgeting import UserBudgeting
 from userspendings import UserSpendings
 from usersavings import UserSavings
+from usersummary import UserSummary
 
 
 
@@ -149,13 +150,16 @@ def summary():
 
     logged_user_savings = UserSavings()
     logged_user_spendings = UserSpendings()
+    logged_user_summary = UserSummary(UserBudgeting.display_last_income(session["_user_id"]))
 
     current_month_savings = logged_user_savings.sum_of_savings_current_month
     current_month_spendings = logged_user_spendings.sum_of_categories_from_current_month
-    current_month_income = UserBudgeting.display_last_income()
+    current_month_income = UserBudgeting.display_last_income(session["_user_id"])
     current_month_budgeting = UserBudgeting.display_budgeting()
 
-    return render_template("summary.html", week_day=week_day, date_today=date_today, savings=current_month_savings, budgeting=current_month_budgeting, spendings=current_month_spendings, income=current_month_income)
+    balance_budgeting_spendings = logged_user_summary.balance_of_budgeting_spendings_month
+
+    return render_template("summary.html", week_day=week_day, date_today=date_today, savings=current_month_savings, budgeting=current_month_budgeting, spendings=current_month_spendings, income=current_month_income, balance=balance_budgeting_spendings)
 
 
 @app.route("/budgeting", methods=["GET", "POST"])

@@ -25,6 +25,16 @@
     <p>Investments: {{ spendings["investments"] }}$</p>
     <p>Education: {{ spendings["education"] }}$</p>
     <p>Others: {{ spendings["others"] }}$</p>
+    <br>
+    <h3>Balance sheet</h3>
+    <p>Difference between budgeting and spendings.</p>
+    <br>
+    <p>Daily spendings: {{ balance["daily_spendings"] }}$</p>
+    <p>Large spendings: {{ balance["large_spendings"] }}$</p>
+    <p>Investments: {{ balance["investments"] }}$</p>
+    <p>Education: {{ balance["education"] }}$</p>
+    <p>Others: {{ balance["others"] }}$</p>
+    <b>TOTAL: {{ balance["total"] }}$</b>
 </form> 
 
 {% endblock %}

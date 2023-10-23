@@ -3,6 +3,9 @@
 
 {% block body %}
 <form action="/" method="post">
+    <h1>Welcome in Home Budget Website!</h1>
+    <p>We recommend to do budgeting in the beginning of the month. Income and savings should be implemented separately.</p>
+    <br>
     <h1>Summary</h1>
     <p>Today is {{ week_day }}, {{ date_today }}.</p>
     <p>This is current month summary.</p>
@@ -35,6 +38,7 @@
     <p>Education: {{ balance["education"] }}$</p>
     <p>Others: {{ balance["others"] }}$</p>
     <b>TOTAL: {{ balance["total"] }}$</b>
+    <br><br>
 </form> 
 
 {% endblock %}

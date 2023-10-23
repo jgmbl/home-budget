@@ -67,8 +67,7 @@ class UserBudgeting:
     """Display last income"""
     @staticmethod
     def display_last_income():
-        #user_id = session["_user_id"]
-        user_id = 1
+        user_id = session["_user_id"]
 
         con = sqlite3.connect("instance/budget.db")
         cur = con.cursor()

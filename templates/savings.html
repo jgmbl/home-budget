@@ -17,8 +17,8 @@
     <h3>Current month savings</h3>
     <p>Check your savings.</p>
     <p>Month: {{ month_information["month"] }}</p>
-    <p>Value [$]: {{ month_information["value"] }}</p>
-    <b>TOTAL [$]: {{ month_information["value_total"] }}</b>
+    <p>Value: {{ month_information["value"] }}$</p>
+    <b>TOTAL: {{ month_information["value_total"] }}$</b>
     <br><br><br>
     <h3>History</h3>
     <p>Check history of savings.</p>
@@ -33,8 +33,8 @@
         <tbody>
             {% for data in display_data %}
                 <tr>
-                  <td>{{ data[0] }}</td>
-                  <td>{{ data[1] }}</td>
+                  <td>{{ data[0] }}$</td>
+                  <td>{{ data[1] }}$</td>
                   <td>{{ data[2] }}</td>
                 </tr>
             {% endfor %}

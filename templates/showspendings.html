@@ -21,12 +21,12 @@
         <br>
         <h5>Period: {{ period }}</h5>
         <br>
-        <p>Daily spendings [$]: {{ daily_spendings }} </p>
-        <p>Large spendings [$]: {{ large_spendings }}</p>
-        <p>Investments [$]: {{ investments }} </p>
-        <p>Education [$]: {{ education }}</p>
-        <p>Others [$]: {{ others }} </p>
-        <b>TOTAL [$]: {{ total }}</b>
+        <p>Daily spendings: {{ daily_spendings }}$ </p>
+        <p>Large spendings: {{ large_spendings }}$</p>
+        <p>Investments: {{ investments }}$ </p>
+        <p>Education: {{ education }}$</p>
+        <p>Others: {{ others }}$ </p>
+        <b>TOTAL: {{ total }}$</b>
         <br><br>
             <table class="table">
                 <thead>
@@ -41,7 +41,7 @@
                     {% for data in display_data %}
                         <tr>
                           <td>{{ data[0] }}</td>
-                          <td>{{ data[1] }}</td>
+                          <td>{{ data[1] }}$</td>
                           <td>{{ data[2] }}</td>
                           <td>{{ data[3] }}</td>
                         </tr>

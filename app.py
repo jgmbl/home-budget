@@ -258,18 +258,11 @@ def show_spendings():
 
         sum_categories = logged_user_spendings.display_sum_of_categories(display_spendings)
 
-        daily_spendings = round(sum_categories["daily_spendings"], 2)
-        large_spendings = round(sum_categories["large_spendings"], 2)
-        investments = round(sum_categories["investments"], 2)
-        education = round(sum_categories["education"], 2)
-        others = round(sum_categories["others"], 2)
-        total = round(sum_categories["total"], 2)
 
-            
-        return render_template("showspendings.html", week_day=week_day, date_today=date_today, display_data=period_of_spendings, period=period, daily_spendings=daily_spendings, large_spendings=large_spendings, investments=investments, education=education, others=others, total=total)
+        return render_template("showspendings.html", week_day=week_day, date_today=date_today, display_data=period_of_spendings, period=period, sum_categories=sum_categories)
     
     else:
-        return render_template("showspendings.html", week_day=week_day, date_today=date_today)
+        return render_template("showspendings.html", week_day=week_day, date_today=date_today, sum_categories=sum_categories)
 
 
 @app.route("/savings", methods=["GET", "POST"])

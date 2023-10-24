@@ -25,6 +25,7 @@ class UserSpendings:
         con.close()
 
 
+    """Get spendings from current month"""
     def get_spendings_from_current_month(self):
         today = datetime.datetime.today()
         current_month = today.strftime("%m")
@@ -41,6 +42,7 @@ class UserSpendings:
         return selected_spendings
 
 
+    """Get spendings from current week"""
     def get_spendings_from_current_week(self):
         today = datetime.datetime.today()
         week_num_today = today.isocalendar()[1]
@@ -58,6 +60,7 @@ class UserSpendings:
         return selected_spendings
 
 
+    """Get all spendings"""
     def get_all_spendings(self):
         user_id = session["_user_id"]
 
@@ -71,6 +74,7 @@ class UserSpendings:
         return selected_spendings
     
 
+    """Get sum of spendings from current month, grouped by categories"""
     @property
     def sum_of_categories_from_current_month(self):
         data = self.get_spendings_from_current_month()
@@ -107,6 +111,7 @@ class UserSpendings:
         return categories_month
     
 
+    """Get sum of spendings from current week, grouped by categories"""
     @property
     def __sum_of_categories_from_current_week(self):
         data = self.get_spendings_from_current_week()
@@ -143,6 +148,7 @@ class UserSpendings:
         return categories_week
     
 
+    """Get sum of all spendings, grouped by categories"""
     @property
     def __sum_of_categories_all(self):
         data = self.get_all_spendings()
@@ -179,7 +185,7 @@ class UserSpendings:
         return categories_all 
 
 
-
+    """Displaying sum of categories by a period of time"""
     def display_sum_of_categories(self, period):
         sum_by_period = {}
         if period == "last_month":

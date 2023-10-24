@@ -9,8 +9,6 @@ from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import InputRequired, Length, ValidationError, EqualTo
 from flask_bcrypt import Bcrypt
 from datetime import date
-import datetime
-import calendar
 from userbudgeting import UserBudgeting
 from userspendings import UserSpendings
 from usersavings import UserSavings
@@ -93,7 +91,6 @@ class RegisterForm(FlaskForm):
             raise ValidationError("Username is taken")
 
 
-
 class LoginForm(FlaskForm):
     username = StringField(validators=[InputRequired(), Length(min=6, max=25)], render_kw={"placeholder": "Username"})
     password = PasswordField(validators=[InputRequired(), Length(min=6, max=25)], render_kw={"placeholder": "Password"})
@@ -111,8 +108,13 @@ def login():
             if user:
                 if bcrypt.check_password_hash(user.password, form.password.data):
                     login_user(user)
-    
                     return redirect("/")
+                
+                else:
+                    return render_template("error.html", statement="Invalid password.")
+        
+            else:
+                return render_template("error.html", statement="Invalid username.")
     
     else:
         return render_template("login.html", form=form)
@@ -137,6 +139,9 @@ def register():
             db.session.commit()
 
             return redirect("/login")
+        
+        else:
+            return render_template("error.html", statement="Invalid username or password.")
 
     else:
         return render_template("register.html", form=form)

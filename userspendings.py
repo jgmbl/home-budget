@@ -36,10 +36,16 @@ class UserSpendings:
         cur = con.cursor()
 
         select_spendings = cur.execute("SELECT category, value, note, date FROM spendings WHERE user_id = ? AND strftime('%m', date) = ?", (user_id, current_month))
-        selected_spendings = select_spendings.fetchall()
+        selected_spendings_cents = select_spendings.fetchall()
         con.close()
 
-        return selected_spendings
+        selected_spendings_dollars = []
+        
+        for category, value, note, date in selected_spendings_cents:
+            value = value / 100
+            selected_spendings_dollars.append((category, value, note, date))
+
+        return selected_spendings_dollars
 
 
     """Get spendings from current week"""
@@ -198,3 +204,12 @@ class UserSpendings:
             sum_by_period = self.__sum_of_categories_all
 
         return sum_by_period
+    
+
+    """Change value from float to int - dollars to cents"""
+    def float_to_int_value(self, value):
+        value = value * 100
+        value = int(value)
+
+        return value
+

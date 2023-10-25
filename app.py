@@ -217,6 +217,10 @@ def spendings():
         value = float(request.form.get("value"))
         note = request.form.get("note")
         category = request.form.get("category")
+
+        #change dollars to cents
+        value = logged_user_spendings.float_to_int_value(value)
+
         #add data to table spendings
         logged_user_spendings.add_spendings_to_table(category, value, note)
             

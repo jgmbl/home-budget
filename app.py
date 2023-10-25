@@ -178,25 +178,28 @@ def budgeting():
 
     if request.method == "POST":
         #get requests from form
-        income = int(request.form.get("income"))
+        income = float(request.form.get("income"))
         daily_spendings = int(request.form.get("daily_spendings"))
         large_spendings = int(request.form.get("large_spendings"))
         investments = int(request.form.get("investments"))
         education = int(request.form.get("education"))
         others = int(request.form.get("others"))
 
-        logged_user = UserBudgeting(income)
+        logged_user_budgeting = UserBudgeting(income)
+
+        #change income from dollars to cents
+        logged_user_budgeting.float_to_int_value()
 
         #check errors
         if UserBudgeting.check_sum_of_percent(daily_spendings, large_spendings, investments, education, others) == False:
             abort(400, "Sum of percent must be equal 100")
 
         #add values to table budgeting
-        logged_user.add_budgeting_to_table("daily spendings", daily_spendings)
-        logged_user.add_budgeting_to_table("large spendings", large_spendings)
-        logged_user.add_budgeting_to_table("investments", investments)
-        logged_user.add_budgeting_to_table("education", education)
-        logged_user.add_budgeting_to_table("others", others)
+        logged_user_budgeting.add_budgeting_to_table("daily spendings", daily_spendings)
+        logged_user_budgeting.add_budgeting_to_table("large spendings", large_spendings)
+        logged_user_budgeting.add_budgeting_to_table("investments", investments)
+        logged_user_budgeting.add_budgeting_to_table("education", education)
+        logged_user_budgeting.add_budgeting_to_table("others", others)
 
         return redirect("/budgeting")
     

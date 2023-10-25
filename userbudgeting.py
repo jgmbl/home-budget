@@ -48,7 +48,7 @@ class UserBudgeting:
         return True
     
 
-    """Display category, value and value_percent from table budgeting to table on website"""
+    """Display category, value and value_percent from database to table on website"""
     @staticmethod
     def display_budgeting():
         user_id = session["_user_id"]
@@ -56,12 +56,17 @@ class UserBudgeting:
         con = sqlite3.connect("instance/budget.db")
         cur = con.cursor()
         
-
         budgeting = cur.execute("SELECT category, value, value_percent, date FROM budgeting WHERE user_id = ? ORDER BY DATE DESC LIMIT 5", (user_id,))
-        budgeting_table = budgeting.fetchall()
+        budgeting_table_cents = budgeting.fetchall()
         con.close()
 
-        return budgeting_table
+        budgeting_table_dollars = []
+
+        for category, value, value_percent, date in budgeting_table_cents:
+            value = value / 100
+            budgeting_table_dollars.append((category, value, value_percent, date))
+
+        return budgeting_table_dollars
     
     
     """Display last income"""
@@ -72,7 +77,18 @@ class UserBudgeting:
         
 
         income = cur.execute("SELECT income FROM budgeting WHERE user_id = ? ORDER BY DATE DESC LIMIT 1", (user_id,))
-        last_income = income.fetchall()
+        last_income_cents = income.fetchall()
         con.close()
 
-        return last_income[0][0]
+        last_income_cents = last_income_cents[0][0]
+        last_income_dollars = last_income_cents / 100
+
+        return last_income_dollars
+    
+
+    """Change value from float to int - dollars to cents"""
+    def float_to_int_value(self):
+        self.value_income = self.value_income * 100
+        self.value_income = int(self.value_income)
+
+        return self.value_income

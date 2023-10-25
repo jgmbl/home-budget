@@ -76,10 +76,3 @@ class UserBudgeting:
         con.close()
 
         return last_income[0][0]
-
-
-
-
-
-
-

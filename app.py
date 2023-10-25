@@ -285,6 +285,9 @@ def savings():
     if request.method == "POST":
         value = float(request.form.get("value"))
 
+        #change dollars to cents
+        value = logged_user_savings.float_to_int_value(value)
+
         #add data to table
         logged_user_savings.add_data_to_table(value)
 

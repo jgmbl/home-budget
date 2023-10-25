@@ -68,6 +68,9 @@ class UserSavings:
         for value in values_from_current_month:
             sum_of_values += value[0]
 
+        #cents to dollars
+        sum_of_values = sum_of_values / 100
+
         return sum_of_values
 
 
@@ -84,7 +87,9 @@ class UserSavings:
 
         con.close()
 
-        return total_sum_savings[0][0]
+        total_sum_savings = total_sum_savings[0][0] / 100
+
+        return total_sum_savings
 
 
     """Return dictionary of month savings information"""
@@ -109,8 +114,23 @@ class UserSavings:
         cur = con.cursor()
 
         cur.execute("SELECT value, value_summary, date FROM savings WHERE user_id = ?", (user_id, ))
-        data_from_table = cur.fetchall()
+        savings_history_cents = cur.fetchall()
 
         con.close()
 
-        return data_from_table
+        savings_history_dollars = []
+
+        for value, value_summary, date in savings_history_cents:
+            value = value / 100
+            value_summary = value_summary / 100
+            savings_history_dollars.append((value, value_summary, date))
+
+        return savings_history_dollars
+    
+
+    """Change value from float to int - dollars to cents"""
+    def float_to_int_value(self, value):
+        value = value * 100
+        value = int(value)
+
+        return value

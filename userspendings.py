@@ -60,10 +60,16 @@ class UserSpendings:
         cur = con.cursor()
 
         select_spendings = cur.execute("SELECT category, value, note, date FROM spendings WHERE user_id = ? AND strftime('%Y', date) = ? AND strftime('%W', date) = ?;", (user_id, str(year_today), str(week_num_today)))
-        selected_spendings = select_spendings.fetchall()
+        selected_spendings_cents = select_spendings.fetchall()
         con.close()
 
-        return selected_spendings
+        selected_spendings_dollars = []
+
+        for category, value, note, date in selected_spendings_cents:
+            value = value / 100
+            selected_spendings_dollars.append((category, value, note, date))
+
+        return selected_spendings_dollars
 
 
     """Get all spendings"""
@@ -74,10 +80,16 @@ class UserSpendings:
         cur = con.cursor()
 
         select_spendings = cur.execute("SELECT category, value, note, date FROM spendings WHERE user_id = ?;", (user_id, ))
-        selected_spendings = select_spendings.fetchall()
+        selected_spendings_cents = select_spendings.fetchall()
         con.close()
 
-        return selected_spendings
+        selected_spendings_dollars = []
+
+        for category, value, note, date in selected_spendings_cents:
+            value = value / 100
+            selected_spendings_dollars.append((category, value, note, date))
+
+        return selected_spendings_dollars
     
 
     """Get sum of spendings from current month, grouped by categories"""

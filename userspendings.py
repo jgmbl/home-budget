@@ -106,7 +106,7 @@ class UserSpendings:
 
         for i in data:
             if i[0] == 'daily_spendings':
-                sum_daily_spendings += i[1] 
+                sum_daily_spendings += i[1]
 
             elif i[0] == "large_spendings":
                 sum_large_spendings += i[1]
@@ -160,7 +160,7 @@ class UserSpendings:
         for i in data:
             sum_total += i[1]
 
-
+        
         categories_week = {'daily_spendings': sum_daily_spendings, 'large_spendings': sum_large_spendings, 'investments': sum_investments, 'education': sum_education, 'others': sum_others, 'total': sum_total}
 
         return categories_week

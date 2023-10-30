@@ -157,14 +157,14 @@ def summary():
 
     logged_user_savings = UserSavings()
     logged_user_spendings = UserSpendings()
-    logged_user_summary = UserSummary(UserBudgeting.display_last_income(session["_user_id"]))
+    logged_user_summary = UserSummary(UserBudgeting.display_last_income(user_id, database))
 
     current_month_savings = logged_user_savings.sum_of_savings_current_month
     current_month_spendings = logged_user_spendings.sum_of_categories_from_current_month(user_id, database)
-    current_month_income = UserBudgeting.display_last_income(session["_user_id"])
-    current_month_budgeting = UserBudgeting.display_budgeting()
+    current_month_income = UserBudgeting.display_last_income(user_id, database)
+    current_month_budgeting = UserBudgeting.display_budgeting(user_id, database)
 
-    balance_budgeting_spendings = logged_user_summary.balance_of_budgeting_spendings_month
+    balance_budgeting_spendings = logged_user_summary.balance_of_budgeting_spendings_month(user_id, database)
 
     return render_template("summary.html", week_day=week_day, date_today=date_today, savings=current_month_savings, budgeting=current_month_budgeting, spendings=current_month_spendings, income=current_month_income, balance=balance_budgeting_spendings)
 
@@ -175,8 +175,11 @@ def budgeting():
     date_today = date.today()
     week_day = date_today.strftime('%A')
 
+    user_id = session["_user_id"]
+    database = "instance/budget.db"
+
     #show data in table
-    budgeting_table = UserBudgeting.display_budgeting()
+    budgeting_table = UserBudgeting.display_budgeting(user_id, database)
 
     if request.method == "POST":
         #get requests from form
@@ -197,11 +200,11 @@ def budgeting():
             abort(400, "Sum of percent must be equal 100")
 
         #add values to table budgeting
-        logged_user_budgeting.add_budgeting_to_table("daily spendings", daily_spendings)
-        logged_user_budgeting.add_budgeting_to_table("large spendings", large_spendings)
-        logged_user_budgeting.add_budgeting_to_table("investments", investments)
-        logged_user_budgeting.add_budgeting_to_table("education", education)
-        logged_user_budgeting.add_budgeting_to_table("others", others)
+        logged_user_budgeting.add_budgeting_to_table("daily spendings", daily_spendings, user_id, database)
+        logged_user_budgeting.add_budgeting_to_table("large spendings", large_spendings, user_id, database)
+        logged_user_budgeting.add_budgeting_to_table("investments", investments, user_id, database)
+        logged_user_budgeting.add_budgeting_to_table("education", education, user_id, database)
+        logged_user_budgeting.add_budgeting_to_table("others", others, user_id, database)
 
         return redirect("/budgeting")
     

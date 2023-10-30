@@ -19,14 +19,13 @@ class UserBudgeting:
     
 
     """Add budgeting from form to table budgeting"""
-    def add_budgeting_to_table(self, category, value_percent):
+    def add_budgeting_to_table(self, category, value_percent, user_id, database):
 
         value = self.__value_percent_to_value_budgeting(value_percent)
         date = datetime.datetime.now()
         date = date.strftime('%Y-%m-%d %H:%M')
-        user_id = session["_user_id"]
 
-        con = sqlite3.connect("instance/budget.db")
+        con = sqlite3.connect(database)
         cur = con.cursor()
 
         budgeting = cur.execute("INSERT INTO  budgeting(user_id, income, category, value, value_percent, date) VALUES (?, ?, ?, ?, ?, ?)", (user_id, self.value_income, category, value, value_percent, date))
@@ -50,10 +49,8 @@ class UserBudgeting:
 
     """Display category, value and value_percent from database to table on website"""
     @staticmethod
-    def display_budgeting():
-        user_id = session["_user_id"]
-
-        con = sqlite3.connect("instance/budget.db")
+    def display_budgeting(user_id, database):
+        con = sqlite3.connect(database)
         cur = con.cursor()
         
         budgeting = cur.execute("SELECT category, value, value_percent, date FROM budgeting WHERE user_id = ? ORDER BY DATE DESC LIMIT 5", (user_id,))
@@ -71,8 +68,8 @@ class UserBudgeting:
     
     """Display last income"""
     @staticmethod
-    def display_last_income(user_id):
-        con = sqlite3.connect("instance/budget.db")
+    def display_last_income(user_id, database):
+        con = sqlite3.connect(database)
         cur = con.cursor()
         
 

@@ -81,12 +81,11 @@ class UserSavings:
 
 
     """Return dictionary of month savings information"""
-    @property
-    def display_current_month_information(self):
+    def display_current_month_information(self, user_id, database):
         current_month_name = calendar.month_name[datetime.datetime.today().month]
 
         try:
-            current_month_information = {"month": current_month_name, "value": round(self.sum_of_savings_current_month, 2), "value_total": round(self.__total_sum_of_savings, 2)}
+            current_month_information = {"month": current_month_name, "value": round(self.sum_of_savings_current_month(user_id, database), 2), "value_total": round(self.__total_sum_of_savings(user_id, database), 2)}
 
         except:
             current_month_information = {"month": current_month_name, "value": round(0, 2), "value_total": round(0, 2)}

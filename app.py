@@ -307,7 +307,7 @@ def savings():
     
     else:
         #add data to current month savings
-        month_information = logged_user_savings.display_current_month_information
+        month_information = logged_user_savings.display_current_month_information(user_id, database)
 
         #add data to history table
         display_data_to_table = logged_user_savings.display_data_table_savings(user_id, database)

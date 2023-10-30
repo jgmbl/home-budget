@@ -11,13 +11,12 @@ class UserSpendings:
 
 
     """Add spendings from form to table spendings"""
-    def add_spendings_to_table(self, category, value, note):
+    def add_spendings_to_table(self, category, value, note, user_id, database):
 
         current_date_and_time = datetime.datetime.now()
         current_date = current_date_and_time.strftime('%Y-%m-%d %H:%M')
-        user_id = session["_user_id"]
-
-        con = sqlite3.connect("instance/budget.db")
+        
+        con = sqlite3.connect(database)
         cur = con.cursor()
 
         cur.execute("INSERT INTO spendings(user_id, category, value, note, date) VALUES (?, ?, ?, ?, ?)", (user_id, category, value, note, current_date))
@@ -26,16 +25,14 @@ class UserSpendings:
 
 
     """Get spendings from current month"""
-    def get_spendings_from_current_month(self):
+    def get_spendings_from_current_month(self, user_id, database):
         today = datetime.datetime.today()
         current_month = today.strftime("%m")
 
-        user_id = session["_user_id"]
-
-        con = sqlite3.connect("instance/budget.db")
+        con = sqlite3.connect(database)
         cur = con.cursor()
 
-        select_spendings = cur.execute("SELECT category, value, note, date FROM spendings WHERE user_id = ? AND strftime('%m', date) = ?", (user_id, current_month))
+        select_spendings = cur.execute("SELECT category, value, note, date FROM spendings WHERE user_id = ? AND strftime('%m', date) = ? ORDER BY date DESC", (user_id, current_month))
         selected_spendings_cents = select_spendings.fetchall()
         con.close()
 
@@ -49,17 +46,15 @@ class UserSpendings:
 
 
     """Get spendings from current week"""
-    def get_spendings_from_current_week(self):
+    def get_spendings_from_current_week(self, user_id, database):
         today = datetime.datetime.today()
         week_num_today = today.isocalendar()[1]
         year_today = today.year
 
-        user_id = session["_user_id"]
-
-        con = sqlite3.connect("instance/budget.db")
+        con = sqlite3.connect(database)
         cur = con.cursor()
 
-        select_spendings = cur.execute("SELECT category, value, note, date FROM spendings WHERE user_id = ? AND strftime('%Y', date) = ? AND strftime('%W', date) = ?;", (user_id, str(year_today), str(week_num_today)))
+        select_spendings = cur.execute("SELECT category, value, note, date FROM spendings WHERE user_id = ? AND strftime('%Y', date) = ? AND strftime('%W', date) = ? ORDER BY date DESC;", (user_id, str(year_today), str(week_num_today)))
         selected_spendings_cents = select_spendings.fetchall()
         con.close()
 
@@ -73,13 +68,11 @@ class UserSpendings:
 
 
     """Get all spendings"""
-    def get_all_spendings(self):
-        user_id = session["_user_id"]
-
-        con = sqlite3.connect("instance/budget.db")
+    def get_all_spendings(self, user_id, database):
+        con = sqlite3.connect(database)
         cur = con.cursor()
 
-        select_spendings = cur.execute("SELECT category, value, note, date FROM spendings WHERE user_id = ?;", (user_id, ))
+        select_spendings = cur.execute("SELECT category, value, note, date FROM spendings WHERE user_id = ? ORDER BY date DESC;", (user_id, ))
         selected_spendings_cents = select_spendings.fetchall()
         con.close()
 
@@ -93,9 +86,8 @@ class UserSpendings:
     
 
     """Get sum of spendings from current month, grouped by categories"""
-    @property
-    def sum_of_categories_from_current_month(self):
-        data = self.get_spendings_from_current_month()
+    def sum_of_categories_from_current_month(self,user_id, database):
+        data = self.get_spendings_from_current_month(user_id, database)
 
         sum_daily_spendings = 0.00
         sum_large_spendings = 0.00
@@ -130,9 +122,8 @@ class UserSpendings:
     
 
     """Get sum of spendings from current week, grouped by categories"""
-    @property
-    def __sum_of_categories_from_current_week(self):
-        data = self.get_spendings_from_current_week()
+    def __sum_of_categories_from_current_week(self, user_id, database):
+        data = self.get_spendings_from_current_week(user_id, database)
 
         sum_daily_spendings = 0.00
         sum_large_spendings = 0.00
@@ -167,9 +158,8 @@ class UserSpendings:
     
 
     """Get sum of all spendings, grouped by categories"""
-    @property
-    def __sum_of_categories_all(self):
-        data = self.get_all_spendings()
+    def __sum_of_categories_all(self, user_id, database):
+        data = self.get_all_spendings(user_id, database)
 
         sum_daily_spendings = 0.00
         sum_large_spendings = 0.00
@@ -204,16 +194,16 @@ class UserSpendings:
 
 
     """Displaying sum of categories by a period of time"""
-    def display_sum_of_categories(self, period):
+    def display_sum_of_categories(self, period, user_id, database):
         sum_by_period = {}
         if period == "last_month":
-            sum_by_period = self.sum_of_categories_from_current_month
+            sum_by_period = self.sum_of_categories_from_current_month(user_id, database)
 
         elif period == "last_week":
-            sum_by_period = self.__sum_of_categories_from_current_week
+            sum_by_period = self.__sum_of_categories_from_current_week(user_id, database)
 
         elif period == "all":
-            sum_by_period = self.__sum_of_categories_all
+            sum_by_period = self.__sum_of_categories_all(user_id, database)
 
         return sum_by_period
     

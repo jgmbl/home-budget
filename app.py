@@ -152,13 +152,15 @@ def register():
 def summary():
     date_today = date.today()
     week_day = date_today.strftime('%A')
+    user_id = session["_user_id"]
+    database = "instance/budget.db"
 
     logged_user_savings = UserSavings()
     logged_user_spendings = UserSpendings()
     logged_user_summary = UserSummary(UserBudgeting.display_last_income(session["_user_id"]))
 
     current_month_savings = logged_user_savings.sum_of_savings_current_month
-    current_month_spendings = logged_user_spendings.sum_of_categories_from_current_month
+    current_month_spendings = logged_user_spendings.sum_of_categories_from_current_month(user_id, database)
     current_month_income = UserBudgeting.display_last_income(session["_user_id"])
     current_month_budgeting = UserBudgeting.display_budgeting()
 
@@ -214,6 +216,8 @@ def spendings():
 
     date_today = date.today()
     week_day = date_today.strftime('%A')
+    user_id = session["_user_id"]
+    database = "instance/budget.db"
 
     if request.method == "POST":
         #get requests from form
@@ -225,7 +229,7 @@ def spendings():
         value = logged_user_spendings.float_to_int_value(value)
 
         #add data to table spendings
-        logged_user_spendings.add_spendings_to_table(category, value, note)
+        logged_user_spendings.add_spendings_to_table(category, value, note, user_id, database)
             
         return redirect("/spendings")
     
@@ -237,10 +241,12 @@ def spendings():
 @login_required
 def show_spendings():
     logged_user_spendings = UserSpendings()
+    user_id = session["_user_id"]
+    database = "instance/budget.db"
 
-    current_month_spendings = logged_user_spendings.get_spendings_from_current_month()
-    current_week_spendings = logged_user_spendings.get_spendings_from_current_week()
-    all_spendings = logged_user_spendings.get_all_spendings()
+    current_month_spendings = logged_user_spendings.get_spendings_from_current_month(user_id, database)
+    current_week_spendings = logged_user_spendings.get_spendings_from_current_week(user_id, database)
+    all_spendings = logged_user_spendings.get_all_spendings(user_id, database)
 
     period = ""
     sum_categories = {}
@@ -263,7 +269,7 @@ def show_spendings():
             period_of_spendings = all_spendings
             period = "all periods"
 
-        sum_categories = logged_user_spendings.display_sum_of_categories(display_spendings)
+        sum_categories = logged_user_spendings.display_sum_of_categories(display_spendings, user_id, database)
 
 
         return render_template("showspendings.html", week_day=week_day, date_today=date_today, display_data=period_of_spendings, period=period, sum_categories=sum_categories)

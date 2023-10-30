@@ -1,6 +1,5 @@
 import sqlite3
 import datetime
-from flask import session
 
 
 FULL_PERCENTAGE = 100

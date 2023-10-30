@@ -1,7 +1,5 @@
-from flask import session
 import sqlite3
 import datetime
-import calendar
 
 class UserSpendings:
     def __init__(self):

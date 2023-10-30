@@ -1,6 +1,5 @@
 from userbudgeting import UserBudgeting
 from userspendings import UserSpendings
-from flask import session
 
 class UserSummary(UserBudgeting, UserSpendings):
 

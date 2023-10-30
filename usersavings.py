@@ -1,4 +1,3 @@
-from flask import session
 import datetime
 import sqlite3
 import calendar
@@ -6,10 +5,8 @@ import calendar
 class UserSavings:
 
     """Check if the user data are empty"""
-    def __check_if_user_data_are_empty(self):
-        user_id = session["_user_id"]
-
-        con = sqlite3.connect("instance/budget.db")
+    def __check_if_user_data_are_empty(self, user_id, database):
+        con = sqlite3.connect(database)
         cur = con.cursor()
 
         cur.execute("SELECT COUNT (*) FROM savings WHERE user_id = ?", (user_id, ))
@@ -20,16 +17,14 @@ class UserSavings:
     
 
     """Add data to table savings"""
-    def add_data_to_table(self, value):
-        user_id = session["_user_id"]
-
+    def add_data_to_table(self, value, user_id, database):
         current_date_and_time = datetime.datetime.now()
         current_date = current_date_and_time.strftime('%Y-%m-%d %H:%M')
 
-        con = sqlite3.connect("instance/budget.db")
+        con = sqlite3.connect(database)
         cur = con.cursor()
 
-        count_rows = self.__check_if_user_data_are_empty()
+        count_rows = self.__check_if_user_data_are_empty(user_id, database)
 
         if count_rows == 0:
             cur.execute("INSERT INTO savings(user_id, value, value_summary, date) VALUES (?, ?, ?, ?)", (user_id, value, value, current_date))
@@ -49,16 +44,12 @@ class UserSavings:
 
 
     """Sum of savings in current month"""
-    @property
-    def sum_of_savings_current_month(self):
-        user_id = session["_user_id"]
-
+    def sum_of_savings_current_month(self, user_id, database):
         today = datetime.datetime.today()
         current_month = today.strftime("%m")
 
-        con = sqlite3.connect("instance/budget.db")
+        con = sqlite3.connect(database)
         cur = con.cursor()
-
 
         cur.execute("SELECT value FROM savings WHERE user_id = ? AND strftime('%m', date) = ?", (user_id, current_month))
         values_from_current_month = cur.fetchall()
@@ -75,11 +66,8 @@ class UserSavings:
 
 
     """Return total sum of savings"""
-    @property
-    def __total_sum_of_savings(self):
-        user_id = session["_user_id"]
-
-        con = sqlite3.connect("instance/budget.db")
+    def __total_sum_of_savings(self, user_id, database):
+        con = sqlite3.connect(database)
         cur = con.cursor()
 
         cur.execute("SELECT value_summary FROM savings WHERE user_id = ? ORDER BY id DESC LIMIT 1", (user_id, ))
@@ -107,13 +95,11 @@ class UserSavings:
 
 
     """Display all history from savings"""
-    def display_data_table_savings(self):
-        user_id = session["_user_id"]
-
-        con = sqlite3.connect("instance/budget.db")
+    def display_data_table_savings(self, user_id, database):
+        con = sqlite3.connect(database)
         cur = con.cursor()
 
-        cur.execute("SELECT value, value_summary, date FROM savings WHERE user_id = ?", (user_id, ))
+        cur.execute("SELECT value, value_summary, date FROM savings WHERE user_id = ? ORDER BY date DESC", (user_id, ))
         savings_history_cents = cur.fetchall()
 
         con.close()

@@ -159,7 +159,7 @@ def summary():
     logged_user_spendings = UserSpendings()
     logged_user_summary = UserSummary(UserBudgeting.display_last_income(user_id, database))
 
-    current_month_savings = logged_user_savings.sum_of_savings_current_month
+    current_month_savings = logged_user_savings.sum_of_savings_current_month(user_id, database)
     current_month_spendings = logged_user_spendings.sum_of_categories_from_current_month(user_id, database)
     current_month_income = UserBudgeting.display_last_income(user_id, database)
     current_month_budgeting = UserBudgeting.display_budgeting(user_id, database)
@@ -285,6 +285,8 @@ def show_spendings():
 @login_required
 def savings():
     logged_user_savings = UserSavings()
+    user_id = session["_user_id"]
+    database = "instance/budget.db"
 
     date_today = date.today()
     week_day = date_today.strftime('%A')
@@ -298,7 +300,7 @@ def savings():
         value = logged_user_savings.float_to_int_value(value)
 
         #add data to table
-        logged_user_savings.add_data_to_table(value)
+        logged_user_savings.add_data_to_table(value, user_id, database)
 
 
         return redirect("/savings")
@@ -308,7 +310,7 @@ def savings():
         month_information = logged_user_savings.display_current_month_information
 
         #add data to history table
-        display_data_to_table = logged_user_savings.display_data_table_savings()
+        display_data_to_table = logged_user_savings.display_data_table_savings(user_id, database)
 
         return render_template("savings.html", week_day=week_day, date_today=date_today,month_information=month_information, display_data=display_data_to_table)
     

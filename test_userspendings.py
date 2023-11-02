@@ -23,7 +23,7 @@ class TestUserSpendings(unittest.TestCase, UserSpendings):
         previous_month = previous_month.strftime('%Y-%m-%d %H:%M')
 
         #get next month date
-        next_month = first_day + datetime.timedelta(days=30)
+        next_month = first_day + datetime.timedelta(days=32)
         next_month = next_month.strftime('%Y-%m-%d %H:%M')
 
         #add data to table spendings
@@ -80,7 +80,7 @@ class TestUserSpendings(unittest.TestCase, UserSpendings):
         previous_month = previous_month.strftime('%Y-%m-%d %H:%M')
 
         #get next month date
-        next_month = first_day + datetime.timedelta(days=30)
+        next_month = first_day + datetime.timedelta(days=32)
         next_month = next_month.strftime('%Y-%m-%d %H:%M')
 
         self.__add_data_to_table_spendings(user_id, database)
@@ -110,7 +110,7 @@ class TestUserSpendings(unittest.TestCase, UserSpendings):
         previous_month = previous_month.strftime('%Y-%m-%d %H:%M')
 
         #get next month date
-        next_month = first_day + datetime.timedelta(days=30)
+        next_month = first_day + datetime.timedelta(days=32)
         next_month = next_month.strftime('%Y-%m-%d %H:%M')
 
         self.__add_data_to_table_spendings(user_id, database)
@@ -136,7 +136,7 @@ class TestUserSpendings(unittest.TestCase, UserSpendings):
         previous_month = previous_month.strftime('%Y-%m-%d %H:%M')
 
         #get next month date
-        next_month = first_day + datetime.timedelta(days=30)
+        next_month = first_day + datetime.timedelta(days=32)
         next_month = next_month.strftime('%Y-%m-%d %H:%M')
 
         self.__add_data_to_table_spendings(user_id, database)
@@ -181,6 +181,17 @@ class TestUserSpendings(unittest.TestCase, UserSpendings):
         result_all = self.display_sum_of_categories("all", user_id, database)
         expected_result_all = {'daily_spendings': 43.33, 'large_spendings': 37.10, 'investments': 20.0, 'education': 50.0, 'others': 65.55, 'total': 215.98}
         self.assertEqual(result_all, expected_result_all)
+
+
+    def test_float_to_int_value(self):
+        value1 = self.float_to_int_value(11.5)
+        value2 = self.float_to_int_value(5.98)
+
+        self.assertEqual(value1, 1150)
+        self.assertEqual(type(value1), int)
+
+        self.assertEqual(value2, 598)
+        self.assertEqual(type(value2), int)
 
 if __name__ == "__main__":
     unittest.main()

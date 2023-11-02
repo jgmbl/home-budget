@@ -113,10 +113,6 @@ class TestUserBudgeting(unittest.TestCase, UserBudgeting):
         user_id = 1
         database = "test_budget.db"
 
-        #current date
-        today = datetime.datetime.today()
-        current_date = today.strftime('%Y-%m-%d %H:%M')
-
         #delete data from table budgeting
         self.__delete_data_from_table(database)
 
@@ -127,6 +123,17 @@ class TestUserBudgeting(unittest.TestCase, UserBudgeting):
         expected_result = 3000.0
 
         self.assertEqual(result, expected_result)
+
+
+    def test_float_to_int_value(self):
+        value1 = self.float_to_int_value(11.5)
+        value2 = self.float_to_int_value(5.98)
+
+        self.assertEqual(value1, 1150)
+        self.assertEqual(type(value1), int)
+
+        self.assertEqual(value2, 598)
+        self.assertEqual(type(value2), int)
 
 
 

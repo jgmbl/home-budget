@@ -150,7 +150,7 @@ class UserSpendings:
             sum_total += i[1]
 
         
-        categories_week = {'daily_spendings': sum_daily_spendings * 100, 'large_spendings': sum_large_spendings  * 100, 'investments': sum_investments  * 100, 'education': sum_education  * 100, 'others': sum_others  * 100, 'total': sum_total  * 100}
+        categories_week = {'daily_spendings': sum_daily_spendings, 'large_spendings': sum_large_spendings, 'investments': sum_investments, 'education': sum_education, 'others': sum_others, 'total': sum_total}
 
         return categories_week
     
@@ -186,7 +186,7 @@ class UserSpendings:
             sum_total += i[1]
 
 
-        categories_all = {'daily_spendings': sum_daily_spendings * 100, 'large_spendings': sum_large_spendings  * 100, 'investments': sum_investments  * 100, 'education': sum_education  * 100, 'others': sum_others  * 100, 'total': sum_total  * 100}
+        categories_all = {'daily_spendings': sum_daily_spendings, 'large_spendings': sum_large_spendings, 'investments': sum_investments, 'education': sum_education, 'others': sum_others, 'total': sum_total}
 
         return categories_all 
 

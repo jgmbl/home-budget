@@ -5,29 +5,25 @@ import datetime
 FULL_PERCENTAGE = 100
 
 class UserBudgeting:
-    def __init__(self, value_income):
-        self.value_income = value_income
-
-
     """Convert percent value to numerical value"""
-    def __value_percent_to_value_budgeting(self, value_percent):
+    def __value_percent_to_value_budgeting(self, value_percent, value):
         value_numerical = value_percent / FULL_PERCENTAGE
-        value_budgeting = value_numerical * self.value_income
+        value_budgeting = value_numerical * value
 
         return value_budgeting
     
 
     """Add budgeting from form to table budgeting"""
-    def add_budgeting_to_table(self, category, value_percent, user_id, database):
+    def add_budgeting_to_table(self, category, value_percent, income, user_id, database):
 
-        value = self.__value_percent_to_value_budgeting(value_percent)
+        value = self.__value_percent_to_value_budgeting(value_percent, income)
         date = datetime.datetime.now()
         date = date.strftime('%Y-%m-%d %H:%M')
 
         con = sqlite3.connect(database)
         cur = con.cursor()
 
-        budgeting = cur.execute("INSERT INTO  budgeting(user_id, income, category, value, value_percent, date) VALUES (?, ?, ?, ?, ?, ?)", (user_id, self.value_income, category, value, value_percent, date))
+        cur.execute("INSERT INTO  budgeting(user_id, income, category, value, value_percent, date) VALUES (?, ?, ?, ?, ?, ?)", (user_id, income, category, value, value_percent, date))
         con.commit()
         con.close()
 
@@ -83,8 +79,8 @@ class UserBudgeting:
     
 
     """Change value from float to int - dollars to cents"""
-    def float_to_int_value(self):
-        self.value_income = self.value_income * 100
-        self.value_income = int(self.value_income)
+    def float_to_int_value(self, value):
+        value = value * 100
+        value = int(value)
 
-        return self.value_income
+        return value

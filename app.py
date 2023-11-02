@@ -157,7 +157,7 @@ def summary():
 
     logged_user_savings = UserSavings()
     logged_user_spendings = UserSpendings()
-    logged_user_summary = UserSummary(UserBudgeting.display_last_income(user_id, database))
+    logged_user_summary = UserSummary()
 
     current_month_savings = logged_user_savings.sum_of_savings_current_month(user_id, database)
     current_month_spendings = logged_user_spendings.sum_of_categories_from_current_month(user_id, database)
@@ -190,21 +190,21 @@ def budgeting():
         education = int(request.form.get("education"))
         others = int(request.form.get("others"))
 
-        logged_user_budgeting = UserBudgeting(income)
+        logged_user_budgeting = UserBudgeting()
 
         #change income from dollars to cents
-        logged_user_budgeting.float_to_int_value()
-
+        income = logged_user_budgeting.float_to_int_value(income)
+        
         #check errors
         if UserBudgeting.check_sum_of_percent(daily_spendings, large_spendings, investments, education, others) == False:
             abort(400, "Sum of percent must be equal 100")
 
         #add values to table budgeting
-        logged_user_budgeting.add_budgeting_to_table("daily spendings", daily_spendings, user_id, database)
-        logged_user_budgeting.add_budgeting_to_table("large spendings", large_spendings, user_id, database)
-        logged_user_budgeting.add_budgeting_to_table("investments", investments, user_id, database)
-        logged_user_budgeting.add_budgeting_to_table("education", education, user_id, database)
-        logged_user_budgeting.add_budgeting_to_table("others", others, user_id, database)
+        logged_user_budgeting.add_budgeting_to_table("daily spendings", daily_spendings, income, user_id, database)
+        logged_user_budgeting.add_budgeting_to_table("large spendings", large_spendings, income, user_id, database)
+        logged_user_budgeting.add_budgeting_to_table("investments", investments, income, user_id, database)
+        logged_user_budgeting.add_budgeting_to_table("education", education, income, user_id, database)
+        logged_user_budgeting.add_budgeting_to_table("others", others, income, user_id, database)
 
         return redirect("/budgeting")
     

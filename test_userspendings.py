@@ -150,6 +150,8 @@ class TestUserSpendings(unittest.TestCase, UserSpendings):
         cur.execute("INSERT INTO spendings(user_id, category, value, note, date) VALUES (?, ?, ?, ?, ?)", (user_id, "other", 4000, "test5", next_month))
         cur.execute("INSERT INTO spendings(user_id, category, value, note, date) VALUES (?, ?, ?, ?, ?)", (user_id, "large_spendings", 1500, "test6", next_month))
         cur.execute("INSERT INTO spendings(user_id, category, value, note, date) VALUES (?, ?, ?, ?, ?)", (user_id, "other", 2555, "test7", current_date))
+        cur.execute("INSERT INTO spendings(user_id, category, value, note, date) VALUES (?, ?, ?, ?, ?)", (2, "others", 2555, "test8", current_date))
+        cur.execute("INSERT INTO spendings(user_id, category, value, note, date) VALUES (?, ?, ?, ?, ?)", (3, "daily_spendings", 2555, "test9", current_date))
         
         con.commit()
         con.close()
@@ -194,6 +196,8 @@ class TestUserSpendings(unittest.TestCase, UserSpendings):
         cur.execute("INSERT INTO spendings(user_id, category, value, note, date) VALUES (?, ?, ?, ?, ?)", (user_id, "other", 4000, "test5", next_month))
         cur.execute("INSERT INTO spendings(user_id, category, value, note, date) VALUES (?, ?, ?, ?, ?)", (user_id, "large_spendings", 1500, "test6", next_month))
         cur.execute("INSERT INTO spendings(user_id, category, value, note, date) VALUES (?, ?, ?, ?, ?)", (user_id, "others", 2555, "test7", current_date))
+        cur.execute("INSERT INTO spendings(user_id, category, value, note, date) VALUES (?, ?, ?, ?, ?)", (2, "others", 2555, "test8", current_date))
+        cur.execute("INSERT INTO spendings(user_id, category, value, note, date) VALUES (?, ?, ?, ?, ?)", (3, "daily_spendings", 2555, "test9", current_date))
         
         con.commit()
         con.close()
@@ -203,6 +207,61 @@ class TestUserSpendings(unittest.TestCase, UserSpendings):
 
         expected_result = {'daily_spendings': 10.0, 'large_spendings': 22.10, 'investments': 20.0, 'education': 0.0, 'others': 25.55, 'total': 77.65}
         self.assertEqual(result_from_database, expected_result)
+
+
+    def test_display_sum_of_categories(self):
+        user_id = 1
+        database = "test_budget.db"
+
+        con = sqlite3.connect(database)
+        cur = con.cursor()
+
+        #delete data from table spendings
+        cur.execute("DELETE FROM spendings;")
+        con.commit()
+
+        #current date
+        today = datetime.datetime.today()
+        current_date = today.strftime('%Y-%m-%d %H:%M')
+
+        #get previous month date
+        first_day = today.replace(day=1)
+        previous_month = first_day - datetime.timedelta(days=7)
+        previous_month = previous_month.strftime('%Y-%m-%d %H:%M')
+
+        #get next month date
+        next_month = first_day + datetime.timedelta(days=30)
+        next_month = next_month.strftime('%Y-%m-%d %H:%M')
+
+        #add data to table spendings
+        cur.execute("INSERT INTO spendings(user_id, category, value, note, date) VALUES (?, ?, ?, ?, ?)", (user_id, "daily_spendings", 1000, "test0", current_date))
+        cur.execute("INSERT INTO spendings(user_id, category, value, note, date) VALUES (?, ?, ?, ?, ?)", (user_id, "large_spendings", 2210, "test1", current_date))
+        cur.execute("INSERT INTO spendings(user_id, category, value, note, date) VALUES (?, ?, ?, ?, ?)", (user_id, "investments", 2000, "test2", current_date))
+        cur.execute("INSERT INTO spendings(user_id, category, value, note, date) VALUES (?, ?, ?, ?, ?)", (user_id, "education", 5000, "test3", previous_month))
+        cur.execute("INSERT INTO spendings(user_id, category, value, note, date) VALUES (?, ?, ?, ?, ?)", (user_id, "daily_spendings", 3333, "test4", previous_month))
+        cur.execute("INSERT INTO spendings(user_id, category, value, note, date) VALUES (?, ?, ?, ?, ?)", (user_id, "others", 4000, "test5", next_month))
+        cur.execute("INSERT INTO spendings(user_id, category, value, note, date) VALUES (?, ?, ?, ?, ?)", (user_id, "large_spendings", 1500, "test6", next_month))
+        cur.execute("INSERT INTO spendings(user_id, category, value, note, date) VALUES (?, ?, ?, ?, ?)", (user_id, "others", 2555, "test7", current_date))
+        cur.execute("INSERT INTO spendings(user_id, category, value, note, date) VALUES (?, ?, ?, ?, ?)", (2, "others", 2555, "test8", current_date))
+        cur.execute("INSERT INTO spendings(user_id, category, value, note, date) VALUES (?, ?, ?, ?, ?)", (3, "daily_spendings", 2555, "test9", previous_month))
+        
+        con.commit()
+        con.close()
+
+        #results from current month
+        result_current_month = self.display_sum_of_categories("last_month", user_id, database)
+        expected_result_current_month = {'daily_spendings': 10.0, 'large_spendings': 22.10, 'investments': 20.0, 'education': 0.0, 'others': 25.55, 'total': 77.65}
+        self.assertEqual(result_current_month, expected_result_current_month)
+
+        #results from current week
+        result_current_week = self.display_sum_of_categories("last_week", user_id, database)
+        expected_result_current_week = {'daily_spendings': 10.0, 'large_spendings': 22.10, 'investments': 20.0, 'education': 0.0, 'others': 25.55, 'total': 77.65}
+        self.assertEqual(result_current_week, expected_result_current_week)
+
+        #results from all periods
+        result_all = self.display_sum_of_categories("all", user_id, database)
+        expected_result_all = {'daily_spendings': 43.33, 'large_spendings': 37.10, 'investments': 20.0, 'education': 50.0, 'others': 65.55, 'total': 215.98}
+        self.assertEqual(result_all, expected_result_all)
 
 if __name__ == "__main__":
     unittest.main()

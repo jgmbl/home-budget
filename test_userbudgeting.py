@@ -20,25 +20,25 @@ class TestUserBudgeting(unittest.TestCase, UserBudgeting):
 
         #add data to table budgeting
         #current date
-        cur.execute("INSERT INTO budgeting(user_id, income, category, value, value_percent, date) VALUES (?, ?, ?, ?, ?, ?)", (user_id, 3000, "daily_spendings", 165000, 55, current_date))
-        cur.execute("INSERT INTO budgeting(user_id, income, category, value, value_percent, date) VALUES (?, ?, ?, ?, ?, ?)", (user_id, 3000, "large_spendings", 30000, 10, current_date))
-        cur.execute("INSERT INTO budgeting(user_id, income, category, value, value_percent, date) VALUES (?, ?, ?, ?, ?, ?)", (user_id, 3000, "investments", 45000, 15, current_date))
-        cur.execute("INSERT INTO budgeting(user_id, income, category, value, value_percent, date) VALUES (?, ?, ?, ?, ?, ?)", (user_id, 3000, "education", 30000, 10, current_date))
-        cur.execute("INSERT INTO budgeting(user_id, income, category, value, value_percent, date) VALUES (?, ?, ?, ?, ?, ?)", (user_id, 3000, "others", 30000, 10, current_date))
+        cur.execute("INSERT INTO budgeting(user_id, income, category, value, value_percent, date) VALUES (?, ?, ?, ?, ?, ?)", (user_id, 300000, "daily_spendings", 165000, 55, current_date))
+        cur.execute("INSERT INTO budgeting(user_id, income, category, value, value_percent, date) VALUES (?, ?, ?, ?, ?, ?)", (user_id, 300000, "large_spendings", 30000, 10, current_date))
+        cur.execute("INSERT INTO budgeting(user_id, income, category, value, value_percent, date) VALUES (?, ?, ?, ?, ?, ?)", (user_id, 300000, "investments", 45000, 15, current_date))
+        cur.execute("INSERT INTO budgeting(user_id, income, category, value, value_percent, date) VALUES (?, ?, ?, ?, ?, ?)", (user_id, 300000, "education", 30000, 10, current_date))
+        cur.execute("INSERT INTO budgeting(user_id, income, category, value, value_percent, date) VALUES (?, ?, ?, ?, ?, ?)", (user_id, 300000, "others", 30000, 10, current_date))
 
         #last month
-        cur.execute("INSERT INTO budgeting(user_id, income, category, value, value_percent, date) VALUES (?, ?, ?, ?, ?, ?)", (user_id, 2000, "daily_spendings", 40000, 20, previous_month))
-        cur.execute("INSERT INTO budgeting(user_id, income, category, value, value_percent, date) VALUES (?, ?, ?, ?, ?, ?)", (user_id, 2000, "large_spendings", 40000, 20, previous_month))
-        cur.execute("INSERT INTO budgeting(user_id, income, category, value, value_percent, date) VALUES (?, ?, ?, ?, ?, ?)", (user_id, 2000, "investments", 40000, 20, previous_month))
-        cur.execute("INSERT INTO budgeting(user_id, income, category, value, value_percent, date) VALUES (?, ?, ?, ?, ?, ?)", (user_id, 2000, "education", 40000, 20, previous_month))
-        cur.execute("INSERT INTO budgeting(user_id, income, category, value, value_percent, date) VALUES (?, ?, ?, ?, ?, ?)", (user_id, 2000, "others", 40000, 20, previous_month))
+        cur.execute("INSERT INTO budgeting(user_id, income, category, value, value_percent, date) VALUES (?, ?, ?, ?, ?, ?)", (user_id, 200000, "daily_spendings", 40000, 20, previous_month))
+        cur.execute("INSERT INTO budgeting(user_id, income, category, value, value_percent, date) VALUES (?, ?, ?, ?, ?, ?)", (user_id, 200000, "large_spendings", 40000, 20, previous_month))
+        cur.execute("INSERT INTO budgeting(user_id, income, category, value, value_percent, date) VALUES (?, ?, ?, ?, ?, ?)", (user_id, 200000, "investments", 40000, 20, previous_month))
+        cur.execute("INSERT INTO budgeting(user_id, income, category, value, value_percent, date) VALUES (?, ?, ?, ?, ?, ?)", (user_id, 200000, "education", 40000, 20, previous_month))
+        cur.execute("INSERT INTO budgeting(user_id, income, category, value, value_percent, date) VALUES (?, ?, ?, ?, ?, ?)", (user_id, 200000, "others", 40000, 20, previous_month))
 
         #different user
-        cur.execute("INSERT INTO budgeting(user_id, income, category, value, value_percent, date) VALUES (?, ?, ?, ?, ?, ?)", (2, 3000, "daily_spendings", 165000, 55, current_date))
-        cur.execute("INSERT INTO budgeting(user_id, income, category, value, value_percent, date) VALUES (?, ?, ?, ?, ?, ?)", (2, 3000, "large_spendings", 30000, 10, current_date))
-        cur.execute("INSERT INTO budgeting(user_id, income, category, value, value_percent, date) VALUES (?, ?, ?, ?, ?, ?)", (2, 3000, "investments", 45000, 15, current_date))
-        cur.execute("INSERT INTO budgeting(user_id, income, category, value, value_percent, date) VALUES (?, ?, ?, ?, ?, ?)", (2, 3000, "education", 30000, 10, current_date))
-        cur.execute("INSERT INTO budgeting(user_id, income, category, value, value_percent, date) VALUES (?, ?, ?, ?, ?, ?)", (2, 3000, "others", 30000, 10, current_date))
+        cur.execute("INSERT INTO budgeting(user_id, income, category, value, value_percent, date) VALUES (?, ?, ?, ?, ?, ?)", (2, 300000, "daily_spendings", 165000, 55, current_date))
+        cur.execute("INSERT INTO budgeting(user_id, income, category, value, value_percent, date) VALUES (?, ?, ?, ?, ?, ?)", (2, 300000, "large_spendings", 30000, 10, current_date))
+        cur.execute("INSERT INTO budgeting(user_id, income, category, value, value_percent, date) VALUES (?, ?, ?, ?, ?, ?)", (2, 300000, "investments", 45000, 15, current_date))
+        cur.execute("INSERT INTO budgeting(user_id, income, category, value, value_percent, date) VALUES (?, ?, ?, ?, ?, ?)", (2, 300000, "education", 30000, 10, current_date))
+        cur.execute("INSERT INTO budgeting(user_id, income, category, value, value_percent, date) VALUES (?, ?, ?, ?, ?, ?)", (2, 300000, "others", 30000, 10, current_date))
 
         con.commit()
         con.close()
@@ -99,10 +99,32 @@ class TestUserBudgeting(unittest.TestCase, UserBudgeting):
 
         #delete data from table budgeting
         self.__delete_data_from_table(database)
+
+        #add data to table
         self.__add_data_to_table_budgeting(user_id, database)
 
         result = self.display_budgeting(user_id, database)
         expected_result = [('daily_spendings', 1650.0, 55, current_date), ('large_spendings', 300.0, 10, current_date), ('investments', 450.0, 15, current_date), ('education', 300.0, 10, current_date), ('others', 300.0, 10, current_date)]
+
+        self.assertEqual(result, expected_result)
+
+    
+    def test_display_last_income(self):
+        user_id = 1
+        database = "test_budget.db"
+
+        #current date
+        today = datetime.datetime.today()
+        current_date = today.strftime('%Y-%m-%d %H:%M')
+
+        #delete data from table budgeting
+        self.__delete_data_from_table(database)
+
+        #add data to table
+        self.__add_data_to_table_budgeting(user_id, database)
+
+        result = self.display_last_income(user_id, database)
+        expected_result = 3000.0
 
         self.assertEqual(result, expected_result)
 

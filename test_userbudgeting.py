@@ -43,5 +43,13 @@ class TestUserBudgeting(unittest.TestCase, UserBudgeting):
         self.assertEqual(result, expected_result)
 
 
+    def test_check_sum_of_percent(self):
+        value_1 = self.check_sum_of_percent(1,2,3,4,5)
+        value_2 = self.check_sum_of_percent(20,20,20,20,20)
+
+        self.assertFalse(value_1)
+        self.assertTrue(value_2)
+
+
 if __name__ == "__main__":
     unittest.main()

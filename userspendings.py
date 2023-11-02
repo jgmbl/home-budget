@@ -94,27 +94,28 @@ class UserSpendings:
         sum_others = 0.0
         sum_total = 0.0
 
+        #*100 to fix the bug of rounding
         for i in data:
             if i[0] == 'daily_spendings':
-                sum_daily_spendings += i[1]
+                sum_daily_spendings += i[1] * 100
 
             elif i[0] == "large_spendings":
-                sum_large_spendings += i[1]
+                sum_large_spendings += i[1] * 100
 
             elif i[0] == "investments":
-                sum_investments += i[1]
+                sum_investments += i[1] * 100
 
             elif i[0] == "education":
-                sum_education += i[1]
+                sum_education += i[1] * 100
 
             elif i[0] == "others":
-                sum_others += i[1]
+                sum_others += i[1] * 100
 
         for i in data:
-            sum_total += i[1]
+            sum_total += i[1] * 100
 
 
-        categories_month = {'daily_spendings': sum_daily_spendings, 'large_spendings': sum_large_spendings, 'investments': sum_investments, 'education': sum_education, 'others': sum_others, 'total': sum_total}
+        categories_month = {'daily_spendings': sum_daily_spendings / 100, 'large_spendings': sum_large_spendings / 100, 'investments': sum_investments / 100, 'education': sum_education / 100, 'others': sum_others / 100, 'total': sum_total / 100}
 
         return categories_month
     
@@ -123,34 +124,35 @@ class UserSpendings:
     def __sum_of_categories_from_current_week(self, user_id, database):
         data = self.get_spendings_from_current_week(user_id, database)
 
-        sum_daily_spendings = 0.00
-        sum_large_spendings = 0.00
-        sum_investments = 0.00
-        sum_education = 0.00
-        sum_others = 0.00
-        sum_total = 0.00
+        sum_daily_spendings = 0.0
+        sum_large_spendings = 0.0
+        sum_investments = 0.0
+        sum_education = 0.0
+        sum_others = 0.0
+        sum_total = 0.0
 
+        #*100 to fix the bug of rounding
         for i in data:
             if i[0] == 'daily_spendings':
-                sum_daily_spendings += i[1] 
+                sum_daily_spendings += i[1] * 100
 
             elif i[0] == "large_spendings":
-                sum_large_spendings += i[1]
+                sum_large_spendings += i[1] * 100
 
             elif i[0] == "investments":
-                sum_investments += i[1]
+                sum_investments += i[1] * 100
 
             elif i[0] == "education":
-                sum_education += i[1]
+                sum_education += i[1] * 100
 
             elif i[0] == "others":
-                sum_others += i[1]
+                sum_others += i[1] * 100
 
         for i in data:
-            sum_total += i[1]
+            sum_total += i[1] * 100
 
         
-        categories_week = {'daily_spendings': sum_daily_spendings, 'large_spendings': sum_large_spendings, 'investments': sum_investments, 'education': sum_education, 'others': sum_others, 'total': sum_total}
+        categories_week = {'daily_spendings': sum_daily_spendings / 100, 'large_spendings': sum_large_spendings / 100, 'investments': sum_investments / 100, 'education': sum_education / 100, 'others': sum_others / 100, 'total': sum_total / 100}
 
         return categories_week
     
@@ -159,34 +161,35 @@ class UserSpendings:
     def __sum_of_categories_all(self, user_id, database):
         data = self.get_all_spendings(user_id, database)
 
-        sum_daily_spendings = 0.00
-        sum_large_spendings = 0.00
-        sum_investments = 0.00
-        sum_education = 0.00
-        sum_others = 0.00
-        sum_total = 0.00
+        sum_daily_spendings = 0.0
+        sum_large_spendings = 0.0
+        sum_investments = 0.0
+        sum_education = 0.0
+        sum_others = 0.0
+        sum_total = 0.0
 
+        #*100 to fix the bug of rounding
         for i in data:
             if i[0] == 'daily_spendings':
-                sum_daily_spendings += i[1] 
+                sum_daily_spendings += i[1] * 100
 
             elif i[0] == "large_spendings":
-                sum_large_spendings += i[1]
+                sum_large_spendings += i[1] * 100
 
             elif i[0] == "investments":
-                sum_investments += i[1]
+                sum_investments += i[1] * 100
 
             elif i[0] == "education":
-                sum_education += i[1]
+                sum_education += i[1] * 100
 
             elif i[0] == "others":
-                sum_others += i[1]
+                sum_others += i[1] * 100
 
         for i in data:
-            sum_total += i[1]
+            sum_total += i[1] * 100
 
 
-        categories_all = {'daily_spendings': sum_daily_spendings, 'large_spendings': sum_large_spendings, 'investments': sum_investments, 'education': sum_education, 'others': sum_others, 'total': sum_total}
+        categories_all = {'daily_spendings': sum_daily_spendings / 100, 'large_spendings': sum_large_spendings  / 100, 'investments': sum_investments  / 100, 'education': sum_education  / 100, 'others': sum_others  / 100, 'total': sum_total / 100}
 
         return categories_all 
 

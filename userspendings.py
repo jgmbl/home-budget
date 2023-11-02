@@ -17,7 +17,7 @@ class UserSpendings:
         con = sqlite3.connect(database)
         cur = con.cursor()
 
-        cur.execute("INSERT INTO spendings(user_id, category, value, note, date) VALUES (?, ?, ?, ?, ?)", (user_id, category, value, note, current_date))
+        cur.execute("INSERT INTO spendings(user_id, category, value, note, date) VALUES (?, ?, ?, ?, ?)", (user_id, category, self.float_to_int_value(value), note, current_date))
         con.commit()
         con.close()
 
@@ -87,12 +87,12 @@ class UserSpendings:
     def sum_of_categories_from_current_month(self,user_id, database):
         data = self.get_spendings_from_current_month(user_id, database)
 
-        sum_daily_spendings = 0.00
-        sum_large_spendings = 0.00
-        sum_investments = 0.00
-        sum_education = 0.00
-        sum_others = 0.00
-        sum_total = 0.00
+        sum_daily_spendings = 0.0
+        sum_large_spendings = 0.0
+        sum_investments = 0.0
+        sum_education = 0.0
+        sum_others = 0.0
+        sum_total = 0.0
 
         for i in data:
             if i[0] == 'daily_spendings':
@@ -150,7 +150,7 @@ class UserSpendings:
             sum_total += i[1]
 
         
-        categories_week = {'daily_spendings': sum_daily_spendings, 'large_spendings': sum_large_spendings, 'investments': sum_investments, 'education': sum_education, 'others': sum_others, 'total': sum_total}
+        categories_week = {'daily_spendings': sum_daily_spendings * 100, 'large_spendings': sum_large_spendings  * 100, 'investments': sum_investments  * 100, 'education': sum_education  * 100, 'others': sum_others  * 100, 'total': sum_total  * 100}
 
         return categories_week
     
@@ -186,7 +186,7 @@ class UserSpendings:
             sum_total += i[1]
 
 
-        categories_all = {'daily_spendings': sum_daily_spendings, 'large_spendings': sum_large_spendings, 'investments': sum_investments, 'education': sum_education, 'others': sum_others, 'total': sum_total}
+        categories_all = {'daily_spendings': sum_daily_spendings * 100, 'large_spendings': sum_large_spendings  * 100, 'investments': sum_investments  * 100, 'education': sum_education  * 100, 'others': sum_others  * 100, 'total': sum_total  * 100}
 
         return categories_all 
 

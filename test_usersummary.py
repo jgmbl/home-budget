@@ -35,11 +35,11 @@ class TestUserBudgeting(unittest.TestCase, UserSummary):
         cur.execute("INSERT INTO budgeting(user_id, income, category, value, value_percent, date) VALUES (?, ?, ?, ?, ?, ?)", (user_id, 200000, "others", 40000, 20, previous_month))
 
         #different user
-        cur.execute("INSERT INTO budgeting(user_id, income, category, value, value_percent, date) VALUES (?, ?, ?, ?, ?, ?)", (2, 300000, "daily_spendings", 165000, 55, current_date))
-        cur.execute("INSERT INTO budgeting(user_id, income, category, value, value_percent, date) VALUES (?, ?, ?, ?, ?, ?)", (2, 300000, "large_spendings", 30000, 10, current_date))
-        cur.execute("INSERT INTO budgeting(user_id, income, category, value, value_percent, date) VALUES (?, ?, ?, ?, ?, ?)", (2, 300000, "investments", 45000, 15, current_date))
-        cur.execute("INSERT INTO budgeting(user_id, income, category, value, value_percent, date) VALUES (?, ?, ?, ?, ?, ?)", (2, 300000, "education", 30000, 10, current_date))
-        cur.execute("INSERT INTO budgeting(user_id, income, category, value, value_percent, date) VALUES (?, ?, ?, ?, ?, ?)", (2, 300000, "others", 30000, 10, current_date))
+        cur.execute("INSERT INTO budgeting(user_id, income, category, value, value_percent, date) VALUES (?, ?, ?, ?, ?, ?)", (user_id + 1, 300000, "daily_spendings", 165000, 55, current_date))
+        cur.execute("INSERT INTO budgeting(user_id, income, category, value, value_percent, date) VALUES (?, ?, ?, ?, ?, ?)", (user_id + 1, 300000, "large_spendings", 30000, 10, current_date))
+        cur.execute("INSERT INTO budgeting(user_id, income, category, value, value_percent, date) VALUES (?, ?, ?, ?, ?, ?)", (user_id + 1, 300000, "investments", 45000, 15, current_date))
+        cur.execute("INSERT INTO budgeting(user_id, income, category, value, value_percent, date) VALUES (?, ?, ?, ?, ?, ?)", (user_id + 1, 300000, "education", 30000, 10, current_date))
+        cur.execute("INSERT INTO budgeting(user_id, income, category, value, value_percent, date) VALUES (?, ?, ?, ?, ?, ?)", (user_id + 1, 300000, "others", 30000, 10, current_date))
 
         con.commit()
         con.close()
@@ -92,6 +92,23 @@ class TestUserBudgeting(unittest.TestCase, UserSummary):
         con.commit()
 
         con.close()
+
+    
+    def test_change_display_budgeting_dictionary(self):
+        user_id = 1
+        database = "test_budget.db"
+
+        #delete data from tables
+        self.__delete_data_from_table(database)
+
+        #add data to table budgeting
+        self.__add_data_to_table_budgeting(user_id, database)
+
+        result = self.change_display_budgeting_dictionary(user_id, database)
+
+        expected_result = {'daily_spendings': 1650.0, 'large_spendings': 300.0, 'investments': 450.0, 'education': 300.0, 'others': 300.0, 'income': 3000.0}
+
+        self.assertEqual(result, expected_result)
 
 
 if __name__ == "__main__":

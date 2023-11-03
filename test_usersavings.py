@@ -1,9 +1,9 @@
 import unittest
-from userbudgeting import UserBudgeting
+from usersavings import UserSavings
 import sqlite3
 import datetime
 
-class TestUserBudgeting(unittest.TestCase, UserBudgeting):
+class TestUserBudgeting(unittest.TestCase, UserSavings):
 
     def __add_data_to_table_savings(self, user_id, database):
         con = sqlite3.connect(database)
@@ -38,6 +38,39 @@ class TestUserBudgeting(unittest.TestCase, UserBudgeting):
         con.commit()
 
         con.close()
+
+
+    def test_add_data_to_table(self):
+        user_id = 1
+        database = "test_budget.db"
+
+        #current date
+        today = datetime.datetime.today()
+        current_date = today.strftime('%Y-%m-%d %H:%M')
+
+        con = sqlite3.connect(database)
+        cur = con.cursor()
+
+        #delete records from table spendings
+        self.__delete_data_from_table(database)
+
+        #add data to database by tested methods
+        self.add_data_to_table(100000, user_id, database)
+        self.add_data_to_table(400000, 2, database)
+        self.add_data_to_table(500000, 3, database)
+        self.add_data_to_table(100000, user_id, database)
+        self.add_data_to_table(300000, user_id, database)
+
+        #select data from table savings
+        data = cur.execute("SELECT id, user_id, value, value_summary, date FROM savings WHERE user_id = ?;", (user_id, ))
+        result = data.fetchall()
+        con.close()
+
+        expected_result = [(1, 1, 100000, 100000, current_date), (4, 1, 100000, 200000, current_date), (5, 1, 300000, 500000, current_date)]
+
+        self.assertEqual(result, expected_result)
+
+
 
 
 if __name__ == "__main__":

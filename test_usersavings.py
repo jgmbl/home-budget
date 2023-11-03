@@ -167,5 +167,16 @@ class TestUserBudgeting(unittest.TestCase, UserSavings):
         self.assertEqual(result, expected_result)
 
 
+    def test_float_to_int_value(self):
+        value1 = self.float_to_int_value(11.5)
+        value2 = self.float_to_int_value(5.98)
+
+        self.assertEqual(value1, 1150)
+        self.assertEqual(type(value1), int)
+
+        self.assertEqual(value2, 598)
+        self.assertEqual(type(value2), int)
+
+
 if __name__ == "__main__":
     unittest.main()

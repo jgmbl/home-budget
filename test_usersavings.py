@@ -24,6 +24,9 @@ class TestUserBudgeting(unittest.TestCase, UserSavings):
         cur.execute("INSERT INTO savings(user_id, value, value_summary, date) VALUES (?, ?, ?, ?)", (user_id, 100000, 600000, current_date))
         cur.execute("INSERT INTO savings(user_id, value, value_summary, date) VALUES (?, ?, ?, ?)", (user_id, 200000, 800000, current_date))
         cur.execute("INSERT INTO savings(user_id, value, value_summary, date) VALUES (?, ?, ?, ?)", (user_id, 250000, 1050000, current_date))
+        cur.execute("INSERT INTO savings(user_id, value, value_summary, date) VALUES (?, ?, ?, ?)", (user_id + 1, 300000, 300000, current_date))
+        cur.execute("INSERT INTO savings(user_id, value, value_summary, date) VALUES (?, ?, ?, ?)", (user_id + 1, 200000, 500000, current_date))
+        cur.execute("INSERT INTO savings(user_id, value, value_summary, date) VALUES (?, ?, ?, ?)", (user_id + 1, 500000, 1000000, current_date))
 
         con.commit()
         con.close()
@@ -51,7 +54,7 @@ class TestUserBudgeting(unittest.TestCase, UserSavings):
         con = sqlite3.connect(database)
         cur = con.cursor()
 
-        #delete records from table spendings
+        #delete records from table savings
         self.__delete_data_from_table(database)
 
         #add data to database by tested methods
@@ -67,6 +70,23 @@ class TestUserBudgeting(unittest.TestCase, UserSavings):
         con.close()
 
         expected_result = [(1, 1, 100000, 100000, current_date), (4, 1, 100000, 200000, current_date), (5, 1, 300000, 500000, current_date)]
+
+        self.assertEqual(result, expected_result)
+
+
+    def test_sum_of_savings_current_month(self):
+        user_id = 1
+        database = "test_budget.db"
+
+        #delete records from table savings
+        self.__delete_data_from_table(database)
+
+        #add records to table savings
+        self.__add_data_to_table_savings(user_id, database)
+
+        result = self.sum_of_savings_current_month(user_id, database)
+
+        expected_result = 5500.0
 
         self.assertEqual(result, expected_result)
 

@@ -2,6 +2,7 @@ import unittest
 from usersavings import UserSavings
 import sqlite3
 import datetime
+import calendar
 
 class TestUserBudgeting(unittest.TestCase, UserSavings):
 
@@ -87,6 +88,26 @@ class TestUserBudgeting(unittest.TestCase, UserSavings):
         result = self.sum_of_savings_current_month(user_id, database)
 
         expected_result = 5500.0
+
+        self.assertEqual(result, expected_result)
+
+
+    def test_display_current_month_information(self):
+        user_id = 1
+        database = "test_budget.db"
+
+        current_month_name = calendar.month_name[datetime.datetime.today().month]
+
+        #delete records from table savings
+        self.__delete_data_from_table(database)
+
+        #add records to table savings
+        self.__add_data_to_table_savings(user_id, database)
+
+        #dictionary of current month information - name of month, value, value_total
+        result = self.display_current_month_information(user_id, database)
+
+        expected_result = {"month": current_month_name, "value": 5500.0, "value_total": 10500.00}
 
         self.assertEqual(result, expected_result)
 

@@ -14,17 +14,31 @@ class TestUserBudgeting(unittest.TestCase, UserSavings):
         today = datetime.datetime.today()
         current_date = today.strftime('%Y-%m-%d %H:%M')
 
+        #5 minutes before current date
+        minus_5_minutes = today - datetime.timedelta(minutes=5)
+        current_date_minus_5_minutes = minus_5_minutes.strftime('%Y-%m-%d %H:%M')
+
+        #5 minutes after current date
+        plus_5_minutes = today + datetime.timedelta(minutes=5)
+        current_date_plus_5_minutes =plus_5_minutes.strftime('%Y-%m-%d %H:%M')
+
         #get previous month date
         first_day = today.replace(day=1)
-        previous_month = first_day - datetime.timedelta(days=7)
-        previous_month = previous_month.strftime('%Y-%m-%d %H:%M')
+        previous_month_1 = first_day - datetime.timedelta(days=31)
+        previous_month_1 = previous_month_1.strftime('%Y-%m-%d %H:%M')
 
-        cur.execute("INSERT INTO savings(user_id, value, value_summary, date) VALUES (?, ?, ?, ?)", (user_id, 100000, 100000, previous_month))
-        cur.execute("INSERT INTO savings(user_id, value, value_summary, date) VALUES (?, ?, ?, ?)", (user_id, 150000, 250000, previous_month))
-        cur.execute("INSERT INTO savings(user_id, value, value_summary, date) VALUES (?, ?, ?, ?)", (user_id, 250000, 500000, previous_month))
-        cur.execute("INSERT INTO savings(user_id, value, value_summary, date) VALUES (?, ?, ?, ?)", (user_id, 100000, 600000, current_date))
+        previous_month_2 = first_day - datetime.timedelta(days=32)
+        previous_month_2 = previous_month_2.strftime('%Y-%m-%d %H:%M')
+
+        previous_month_3 = first_day - datetime.timedelta(days=33)
+        previous_month_3 = previous_month_3.strftime('%Y-%m-%d %H:%M')
+
+        cur.execute("INSERT INTO savings(user_id, value, value_summary, date) VALUES (?, ?, ?, ?)", (user_id, 100000, 100000, previous_month_3))
+        cur.execute("INSERT INTO savings(user_id, value, value_summary, date) VALUES (?, ?, ?, ?)", (user_id, 150000, 250000, previous_month_2))
+        cur.execute("INSERT INTO savings(user_id, value, value_summary, date) VALUES (?, ?, ?, ?)", (user_id, 250000, 500000, previous_month_1))
+        cur.execute("INSERT INTO savings(user_id, value, value_summary, date) VALUES (?, ?, ?, ?)", (user_id, 100000, 600000, current_date_minus_5_minutes))
         cur.execute("INSERT INTO savings(user_id, value, value_summary, date) VALUES (?, ?, ?, ?)", (user_id, 200000, 800000, current_date))
-        cur.execute("INSERT INTO savings(user_id, value, value_summary, date) VALUES (?, ?, ?, ?)", (user_id, 250000, 1050000, current_date))
+        cur.execute("INSERT INTO savings(user_id, value, value_summary, date) VALUES (?, ?, ?, ?)", (user_id, 250000, 1050000, current_date_plus_5_minutes))
         cur.execute("INSERT INTO savings(user_id, value, value_summary, date) VALUES (?, ?, ?, ?)", (user_id + 1, 300000, 300000, current_date))
         cur.execute("INSERT INTO savings(user_id, value, value_summary, date) VALUES (?, ?, ?, ?)", (user_id + 1, 200000, 500000, current_date))
         cur.execute("INSERT INTO savings(user_id, value, value_summary, date) VALUES (?, ?, ?, ?)", (user_id + 1, 500000, 1000000, current_date))
@@ -112,6 +126,45 @@ class TestUserBudgeting(unittest.TestCase, UserSavings):
         self.assertEqual(result, expected_result)
 
 
+    def test_display_data_table_savings(self):
+        user_id = 1
+        database = "test_budget.db"
+
+        #current date
+        today = datetime.datetime.today()
+        current_date = today.strftime('%Y-%m-%d %H:%M')
+
+        #5 minutes before current date
+        minus_5_minutes = today - datetime.timedelta(minutes=5)
+        current_date_minus_5_minutes = minus_5_minutes.strftime('%Y-%m-%d %H:%M')
+
+        #5 minutes after current date
+        plus_5_minutes = today + datetime.timedelta(minutes=5)
+        current_date_plus_5_minutes =plus_5_minutes.strftime('%Y-%m-%d %H:%M')
+
+        #get previous month date
+        first_day = today.replace(day=1)
+        previous_month_1 = first_day - datetime.timedelta(days=31)
+        previous_month_1 = previous_month_1.strftime('%Y-%m-%d %H:%M')
+
+        previous_month_2 = first_day - datetime.timedelta(days=32)
+        previous_month_2 = previous_month_2.strftime('%Y-%m-%d %H:%M')
+
+        previous_month_3 = first_day - datetime.timedelta(days=33)
+        previous_month_3 = previous_month_3.strftime('%Y-%m-%d %H:%M')
+
+        #delete records from table savings
+        self.__delete_data_from_table(database)
+
+        #add records to table savings
+        self.__add_data_to_table_savings(user_id, database)
+
+        #display data from table savings by user_id
+        result = self.display_data_table_savings(user_id, database)
+        
+        expected_result = [(2500.0, 10500.0, current_date_plus_5_minutes), (2000.0, 8000.0, current_date), (1000.0, 6000.0, current_date_minus_5_minutes), (2500.0, 5000.0, previous_month_1), (1500.0, 2500.0, previous_month_2), (1000.0, 1000.0, previous_month_3)]
+
+        self.assertEqual(result, expected_result)
 
 
 if __name__ == "__main__":

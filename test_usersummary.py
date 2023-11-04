@@ -75,14 +75,14 @@ class TestUserBudgeting(unittest.TestCase, UserSummary):
         cur.execute("INSERT INTO spendings(user_id, category, value, note, date) VALUES (?, ?, ?, ?, ?)", (user_id, "others", 4000, "test5", next_month))
         cur.execute("INSERT INTO spendings(user_id, category, value, note, date) VALUES (?, ?, ?, ?, ?)", (user_id, "large_spendings", 1500, "test6", next_month))
         cur.execute("INSERT INTO spendings(user_id, category, value, note, date) VALUES (?, ?, ?, ?, ?)", (user_id, "others", 2555, "test7", current_date))
-        cur.execute("INSERT INTO spendings(user_id, category, value, note, date) VALUES (?, ?, ?, ?, ?)", (2, "others", 2555, "test8", current_date))
-        cur.execute("INSERT INTO spendings(user_id, category, value, note, date) VALUES (?, ?, ?, ?, ?)", (3, "daily_spendings", 2555, "test9", previous_month))
+        cur.execute("INSERT INTO spendings(user_id, category, value, note, date) VALUES (?, ?, ?, ?, ?)", (user_id + 2, "others", 2555, "test8", current_date))
+        cur.execute("INSERT INTO spendings(user_id, category, value, note, date) VALUES (?, ?, ?, ?, ?)", (user_id + 3, "daily_spendings", 2555, "test9", previous_month))
         
         con.commit()
         con.close()
 
     
-    def __delete_data_from_table(self, database):
+    def __delete_data_from_tables(self, database):
         con = sqlite3.connect(database)
         cur = con.cursor()
 
@@ -99,7 +99,7 @@ class TestUserBudgeting(unittest.TestCase, UserSummary):
         database = "test_budget.db"
 
         #delete data from tables
-        self.__delete_data_from_table(database)
+        self.__delete_data_from_tables(database)
 
         #add data to table budgeting
         self.__add_data_to_table_budgeting(user_id, database)
@@ -108,6 +108,22 @@ class TestUserBudgeting(unittest.TestCase, UserSummary):
 
         expected_result = {'daily_spendings': 1650.0, 'large_spendings': 300.0, 'investments': 450.0, 'education': 300.0, 'others': 300.0, 'income': 3000.0}
 
+        self.assertEqual(result, expected_result)
+
+
+    def test_balance_of_budgeting_spendings_month(self):
+        user_id = 1
+        database = "test_budget.db"
+
+        #delete data from tables
+        self.__delete_data_from_tables(database)
+
+        #add data to tables budgeting and spendings
+        self.__add_data_to_table_budgeting(user_id, database)
+        self.__add_data_to_table_spendings(user_id, database)
+
+        result = self.balance_of_budgeting_spendings_month(user_id, database)
+        expected_result = {'daily_spendings': 1640.0, 'large_spendings': 277.9, 'investments': 430.0, 'education': 300.0, 'others': 274.45, 'total': 2922.35}
         self.assertEqual(result, expected_result)
 
 

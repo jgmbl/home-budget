@@ -1,0 +1,7 @@
+flask==2.3.2
+flask_sqlalchemy==3.0.5
+sqlalchemy==1.4.46
+flask_login==0.6.2
+flask_wtf==1.1.1
+wtforms==3.0.1
+flask_bcrypt==1.0.1

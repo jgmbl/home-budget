@@ -7,8 +7,7 @@ FULL_PERCENTAGE = 100
 class UserBudgeting:
     """Convert percent value to numerical value"""
     def __value_percent_to_value_budgeting(self, value_percent, value):
-        value_numerical = value_percent / FULL_PERCENTAGE
-        value_budgeting = value_numerical * value
+        value_budgeting = value_percent * (value / 100)
 
         return value_budgeting
     

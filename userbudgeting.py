@@ -48,17 +48,25 @@ class UserBudgeting:
         con = sqlite3.connect(database)
         cur = con.cursor()
         
-        budgeting = cur.execute("SELECT category, value, value_percent, date FROM budgeting WHERE user_id = ? ORDER BY DATE DESC LIMIT 5", (user_id,))
-        budgeting_table_cents = budgeting.fetchall()
-        con.close()
+        count_rows = cur.execute("SELECT COUNT(*) FROM budgeting WHERE user_id = ?;", (user_id, ))
+        counted_rows = count_rows.fetchall()[0][0]
 
-        budgeting_table_dollars = []
+        if counted_rows != 0:
+            budgeting = cur.execute("SELECT category, value, value_percent, date FROM budgeting WHERE user_id = ? ORDER BY DATE DESC LIMIT 5", (user_id,))
+            budgeting_table_cents = budgeting.fetchall()
+            con.close()
 
-        for category, value, value_percent, date in budgeting_table_cents:
-            value = value / 100
-            budgeting_table_dollars.append((category, value, value_percent, date))
+            budgeting_table_dollars = []
 
-        return budgeting_table_dollars
+            for category, value, value_percent, date in budgeting_table_cents:
+                value = value / 100
+                budgeting_table_dollars.append((category, value, value_percent, date))
+
+            return budgeting_table_dollars
+        
+        else:
+            budgeting_table_dollars = [('daily spendings', 0.0, 0.0, '-'), ('large spendings', 0.0, 0.0, '-'), ('investments', 0.0, 0.0, '-'), ('education', 0.0, 0.0, '-'), ('others', 0.0, 0.0, '-')]
+            return budgeting_table_dollars
     
     
     """Display last income"""
@@ -72,8 +80,12 @@ class UserBudgeting:
         last_income_cents = income.fetchall()
         con.close()
 
-        last_income_cents = last_income_cents[0][0]
-        last_income_dollars = last_income_cents / 100
+        try:
+            last_income_cents = last_income_cents[0][0]
+            last_income_dollars = last_income_cents / 100
+
+        except:
+            last_income_dollars = 0.0
 
         return last_income_dollars
     

@@ -8,8 +8,11 @@ class UserSummary(UserBudgeting, UserSpendings):
         current_budgeting = self.display_budgeting(user_id, database)
         income = self.display_last_income(user_id, database)
 
-        month_budgeting_dictionary = {'daily_spendings': current_budgeting[0][1], 'large_spendings': current_budgeting[1][1], 'investments': current_budgeting[2][1], 'education': current_budgeting[3][1], 'others': current_budgeting[4][1], 'income': income}
+        try:
+            month_budgeting_dictionary = {'daily_spendings': current_budgeting[0][1], 'large_spendings': current_budgeting[1][1], 'investments': current_budgeting[2][1], 'education': current_budgeting[3][1], 'others': current_budgeting[4][1], 'income': income}
         
+        except:
+            month_budgeting_dictionary = {'daily_spendings': 0.0, 'large_spendings': 0.0, 'investments': 0.0, 'education': 0.0, 'others': 0.0, 'income': income}
 
         return month_budgeting_dictionary
 
@@ -30,4 +33,3 @@ class UserSummary(UserBudgeting, UserSpendings):
         balance = {'daily_spendings': daily_spendings, 'large_spendings': large_spendings, 'investments': investments, 'education': education, 'others': others, 'total': total}
 
         return balance
-

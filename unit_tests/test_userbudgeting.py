@@ -1,7 +1,10 @@
 import unittest
-from userbudgeting import UserBudgeting
 import sqlite3
 import datetime
+from pathlib import Path
+import sys
+sys.path.append(str(Path(__file__).resolve().parent.parent))
+from userbudgeting import UserBudgeting
 
 class TestUserBudgeting(unittest.TestCase, UserBudgeting):
 

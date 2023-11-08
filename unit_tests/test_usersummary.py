@@ -1,7 +1,10 @@
 import unittest
-from usersummary import UserSummary
 import sqlite3
 import datetime
+from pathlib import Path
+import sys
+sys.path.append(str(Path(__file__).resolve().parent.parent))
+from usersummary import UserSummary
 
 
 class TestUserBudgeting(unittest.TestCase, UserSummary):
@@ -96,7 +99,7 @@ class TestUserBudgeting(unittest.TestCase, UserSummary):
     
     def test_change_display_budgeting_dictionary(self):
         user_id = 1
-        database = "test_budget.db"
+        database = "unit_tests/test_budget.db"
 
         #delete data from tables
         self.__delete_data_from_tables(database)
@@ -113,7 +116,7 @@ class TestUserBudgeting(unittest.TestCase, UserSummary):
 
     def test_balance_of_budgeting_spendings_month(self):
         user_id = 1
-        database = "test_budget.db"
+        database = "unit_tests/test_budget.db"
 
         #delete data from tables
         self.__delete_data_from_tables(database)

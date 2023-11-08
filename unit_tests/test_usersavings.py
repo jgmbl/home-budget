@@ -1,8 +1,11 @@
 import unittest
-from usersavings import UserSavings
 import sqlite3
 import datetime
 import calendar
+from pathlib import Path
+import sys
+sys.path.append(str(Path(__file__).resolve().parent.parent))
+from usersavings import UserSavings
 
 class TestUserBudgeting(unittest.TestCase, UserSavings):
 
@@ -60,7 +63,7 @@ class TestUserBudgeting(unittest.TestCase, UserSavings):
 
     def test_add_data_to_table(self):
         user_id = 1
-        database = "test_budget.db"
+        database = "unit_tests/test_budget.db"
 
         #current date
         today = datetime.datetime.today()
@@ -91,7 +94,7 @@ class TestUserBudgeting(unittest.TestCase, UserSavings):
 
     def test_sum_of_savings_current_month(self):
         user_id = 1
-        database = "test_budget.db"
+        database = "unit_tests/test_budget.db"
 
         #delete records from table savings
         self.__delete_data_from_table(database)
@@ -108,7 +111,7 @@ class TestUserBudgeting(unittest.TestCase, UserSavings):
 
     def test_display_current_month_information(self):
         user_id = 1
-        database = "test_budget.db"
+        database = "unit_tests/test_budget.db"
 
         current_month_name = calendar.month_name[datetime.datetime.today().month]
 
@@ -128,7 +131,7 @@ class TestUserBudgeting(unittest.TestCase, UserSavings):
 
     def test_display_data_table_savings(self):
         user_id = 1
-        database = "test_budget.db"
+        database = "unit_tests/test_budget.db"
 
         #current date
         today = datetime.datetime.today()

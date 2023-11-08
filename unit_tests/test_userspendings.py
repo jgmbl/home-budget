@@ -1,7 +1,10 @@
 import unittest
-from userspendings import UserSpendings
 import sqlite3
 import datetime
+from pathlib import Path
+import sys
+sys.path.append(str(Path(__file__).resolve().parent.parent))
+from userspendings import UserSpendings
 
 class TestUserSpendings(unittest.TestCase, UserSpendings):
 
@@ -44,7 +47,7 @@ class TestUserSpendings(unittest.TestCase, UserSpendings):
 
     def test_add_spendings_to_table(self):
         user_id = 1
-        database = "test_budget.db"
+        database = "unit_tests/test_budget.db"
 
         con = sqlite3.connect(database)
         cur = con.cursor()
@@ -68,7 +71,7 @@ class TestUserSpendings(unittest.TestCase, UserSpendings):
     
     def test_get_spendings_from_current_month(self):
         user_id = 1
-        database = "test_budget.db"
+        database = "unit_tests/test_budget.db"
 
         #current date
         today = datetime.datetime.today()
@@ -98,7 +101,7 @@ class TestUserSpendings(unittest.TestCase, UserSpendings):
 
     def test_get_spendings_from_current_week(self):
         user_id = 1
-        database = "test_budget.db"
+        database = "unit_tests/test_budget.db"
 
         #current date
         today = datetime.datetime.today()
@@ -124,7 +127,7 @@ class TestUserSpendings(unittest.TestCase, UserSpendings):
 
     def test_get_all_spendings(self):
         user_id = 1
-        database = "test_budget.db"
+        database = "unit_tests/test_budget.db"
 
         #current date
         today = datetime.datetime.today()
@@ -150,7 +153,7 @@ class TestUserSpendings(unittest.TestCase, UserSpendings):
 
     def test_sum_of_categories_from_current_month(self):
         user_id = 1
-        database = "test_budget.db"
+        database = "unit_tests/test_budget.db"
 
         self.__add_data_to_table_spendings(user_id, database)
 
@@ -163,7 +166,7 @@ class TestUserSpendings(unittest.TestCase, UserSpendings):
 
     def test_display_sum_of_categories(self):
         user_id = 1
-        database = "test_budget.db"
+        database = "unit_tests/test_budget.db"
 
         self.__add_data_to_table_spendings(user_id, database)
 

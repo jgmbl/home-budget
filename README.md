@@ -22,7 +22,6 @@ Technologies used:
 - SQLAlchemy
 - HTML
 - Jinja
-- Unit Tests
 
 Frontend is based on [Bootstrap](https://getbootstrap.com/).
 
@@ -40,11 +39,7 @@ pip install -r requirements.txt
 To initialize the database run:
 ```
 flask shell
-```
-```
 from app import db
-```
-```
 db.create_all()
 ```
 

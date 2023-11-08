@@ -7,6 +7,7 @@ This website is made to help with managing monthly budgeting. Click the link bel
 ## Functionalities
 
 Functionalities of the site include:
+- login and register user
 - adding income
 - creating monthly budgeting
 - adding value, category and a note to each spending

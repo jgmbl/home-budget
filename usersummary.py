@@ -29,7 +29,7 @@ class UserSummary(UserBudgeting, UserSpendings):
         education = (month_budgeting["education"] * 100 - month_spendings["education"] * 100) / 100
         others = (month_budgeting["others"] * 100 - month_spendings["others"] * 100) / 100
         #difference between income and sum of categories
-        total = self.display_last_income(user_id, database) - month_spendings["total"]
+        total = (self.display_last_income(user_id, database) * 100 - month_spendings["total"] * 100) / 100
 
         balance = {'daily_spendings': daily_spendings, 'large_spendings': large_spendings, 'investments': investments, 'education': education, 'others': others, 'total': total}
 

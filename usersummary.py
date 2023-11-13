@@ -22,11 +22,12 @@ class UserSummary(UserBudgeting, UserSpendings):
         month_spendings = self.sum_of_categories_from_current_month(user_id, database)
         month_budgeting = self.change_display_budgeting_dictionary(user_id, database)
 
-        daily_spendings = month_budgeting["daily_spendings"] - month_spendings["daily_spendings"]
-        large_spendings = month_budgeting["large_spendings"] - month_spendings["large_spendings"]
-        investments = month_budgeting["investments"] - month_spendings["investments"]
-        education = month_budgeting["education"] - month_spendings["education"]
-        others = month_budgeting["others"] - month_spendings["others"]
+        #cents to dollars
+        daily_spendings = (month_budgeting["daily_spendings"] * 100 - month_spendings["daily_spendings"] * 100) / 100
+        large_spendings = (month_budgeting["large_spendings"] *100 - month_spendings["large_spendings"] * 100) / 100
+        investments = (month_budgeting["investments"] * 100 - month_spendings["investments"] * 100) / 100
+        education = (month_budgeting["education"] * 100 - month_spendings["education"] * 100) / 100
+        others = (month_budgeting["others"] * 100 - month_spendings["others"] * 100) / 100
         #difference between income and sum of categories
         total = self.display_last_income(user_id, database) - month_spendings["total"]
 

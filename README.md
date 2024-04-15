@@ -19,6 +19,7 @@ Functionalities of the site include:
 ![Alt](https://github.com/jgmbl/home-budget/blob/main/Screenshots/1.png)
 ![Alt](https://github.com/jgmbl/home-budget/blob/main/Screenshots/2.png)
 ![Alt](https://github.com/jgmbl/home-budget/blob/main/Screenshots/3.png)
+![Alt](https://github.com/jgmbl/home-budget/blob/main/Screenshots/4.png)
 
 ## Technologies
 

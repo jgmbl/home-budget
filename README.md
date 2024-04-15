@@ -26,7 +26,6 @@ Functionalities of the site include:
 Technologies used:
 - Flask
 - SQLite
-- SQLAlchemy
 - HTML
 - Jinja
 

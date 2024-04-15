@@ -15,6 +15,11 @@ Functionalities of the site include:
 - adding savings and displaying the history of it
 - displaying balance of budgeting and spendings
 
+![Alt](https://github.com/jgmbl/home-budget/blob/main/Screenshots/0.png)
+![Alt](https://github.com/jgmbl/home-budget/blob/main/Screenshots/1.png)
+![Alt](https://github.com/jgmbl/home-budget/blob/main/Screenshots/2.png)
+![Alt](https://github.com/jgmbl/home-budget/blob/main/Screenshots/3.png)
+
 ## Technologies
 
 Technologies used:
